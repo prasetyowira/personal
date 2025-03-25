@@ -1,0 +1,38 @@
+[
+  {
+    "id": "microservice-architecture",
+    "title": "Microservice Architecture",
+    "description": "Designed and implemented a scalable microservice architecture handling millions of requests per day.",
+    "featured": true,
+    "image": "/images/projects/microservice.svg",
+    "technologies": ["Golang", "Kubernetes", "gRPC", "PostgreSQL"],
+    "link": "/projects/microservice-architecture"
+  },
+  {
+    "id": "distributed-cache",
+    "title": "Distributed Cache System",
+    "description": "Built a high-performance distributed caching system that reduced database load by 70%.",
+    "featured": true,
+    "image": "/images/projects/cache.svg",
+    "technologies": ["Redis", "Golang", "Prometheus", "Docker"],
+    "link": "/projects/distributed-cache"
+  },
+  {
+    "id": "real-time-analytics",
+    "title": "Real-time Analytics Platform",
+    "description": "Developed a real-time analytics platform processing over 100k events per second.",
+    "featured": false,
+    "image": "/images/projects/analytics.svg",
+    "technologies": ["Kafka", "Golang", "ClickHouse", "React"],
+    "link": "/projects/real-time-analytics"
+  },
+  {
+    "id": "payment-gateway",
+    "title": "Payment Gateway Integration",
+    "description": "Implemented a secure payment gateway handling transactions across multiple currencies.",
+    "featured": false,
+    "image": "/images/projects/payment.svg",
+    "technologies": ["Python", "Docker", "PostgreSQL", "Redis"],
+    "link": "/projects/payment-gateway"
+  }
+] 

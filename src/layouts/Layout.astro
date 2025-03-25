@@ -1,0 +1,150 @@
+---
+import Navbar from '@components/Navbar.astro';
+import Footer from '@components/Footer.astro';
+import SEO from '@components/SEO.astro';
+import '@fontsource-variable/jetbrains-mono';
+import '@styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+	locale?: 'en' | 'ja';
+	type?: 'website' | 'article';
+	publishDate?: Date;
+	updatedDate?: Date;
+	author?: string;
+}
+
+const { 
+	title, 
+	description = "Wira - Backend Engineer, Coffee Addict, and Golang Enthusiast", 
+	image = "/images/default-og.png",
+	locale = "en",
+	type = "website",
+	publishDate,
+	updatedDate,
+	author,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang={locale} class="scroll-smooth">
+	<head>
+		<SEO 
+			title={title}
+			description={description}
+			image={image}
+			locale={locale}
+			type={type}
+			publishDate={publishDate}
+			updatedDate={updatedDate}
+			author={author}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+		
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+		
+		<!-- Alternate language links -->
+		{locale === 'en' ? (
+			<link rel="alternate" hreflang="ja" href={`${Astro.site}ja${Astro.url.pathname}`} />
+		) : (
+			<link rel="alternate" hreflang="en" href={`${Astro.site}${Astro.url.pathname.replace(/^\/ja/, '')}`} />
+		)}
+		
+		<ViewTransitions />
+		<style>
+			:root {
+			  --font-weight: 400;
+			}
+			
+			.font-semibold {
+			  --font-weight: 500;
+			}
+			
+			.font-bold {
+			  --font-weight: 700;
+			}
+		</style>
+	</head>
+	<body class="min-h-screen flex flex-col bg-[#121212] text-[#e0e0e0]">
+		<div class="terminal-window">
+			<div class="terminal-header-bar">
+				<div class="terminal-buttons">
+					<span class="terminal-button terminal-button-red"></span>
+					<span class="terminal-button terminal-button-yellow"></span>
+					<span class="terminal-button terminal-button-green"></span>
+				</div>
+				<div class="terminal-title">wira@portfolio ~ {Astro.url.pathname}</div>
+			</div>
+			
+			<Navbar locale={locale} />
+			
+			<main class="container-custom py-8 flex-grow">
+				<slot />
+			</main>
+			
+			<Footer locale={locale} />
+		</div>
+	</body>
+</html>
+
+<style>
+	@import "tailwindcss";
+
+	.terminal-window {
+		@apply flex flex-col bg-[--bg-terminal] text-[--text-primary];
+		font-family: 'JetBrains Mono', monospace;
+		min-height: 100vh;
+		border: 1px solid var(--border-color);
+		box-shadow: 0 0 0 2px rgba(0, 255, 133, 0.2), 0 20px 68px rgba(0, 0, 0, 0.55);
+	}
+	
+	.terminal-header-bar {
+		@apply flex items-center px-4 py-2 bg-black border-b;
+		border-color: var(--border-color);
+	}
+	
+	.terminal-buttons {
+		@apply flex space-x-2 mr-4;
+	}
+	
+	.terminal-button {
+		@apply block w-3 h-3 rounded-full;
+	}
+	
+	.terminal-button-red {
+		@apply bg-red-500;
+	}
+	
+	.terminal-button-yellow {
+		@apply bg-yellow-500;
+	}
+	
+	.terminal-button-green {
+		@apply bg-green-500;
+	}
+	
+	.terminal-title {
+		@apply flex-1 text-center text-xs text-gray-500;
+	}
+</style>

@@ -1,0 +1,14 @@
+---
+import Welcome from '@components/Welcome.astro';
+import Layout from '@layouts/Layout.astro';
+
+const locale = 'ja';
+---
+
+<Layout 
+  title="ウィラ | バックエンドエンジニア & ソフトウェアアーキテクト"
+  description="10年以上の経験を持つシニアバックエンドエンジニア、ウィラのポートフォリオとブログ。Golang、Python、分散システムを専門としています。"
+  locale={locale}
+>
+  <Welcome locale={locale} />
+</Layout> 

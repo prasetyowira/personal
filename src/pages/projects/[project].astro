@@ -1,0 +1,69 @@
+---
+import Layout from '@layouts/Layout.astro';
+import projectsData from '@data/projects.json';
+import type { Project } from '@types/project';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return projectsData.map(project => ({
+    params: { project: project.id },
+    props: { projectData: project },
+  }));
+}
+
+interface Props {
+  projectData: Project;
+}
+
+const { projectData } = Astro.props;
+---
+
+<Layout title={`${projectData.title} | Wira`}>
+  <div class="container-custom py-8">
+    <div class="terminal-line mb-4">
+      <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects/${projectData.id}</span><span class="text-[--text-secondary]">$</span>
+      <span class="text-[--text-primary] ml-2">cat README.md</span>
+    </div>
+    
+    <div class="mb-8">
+      <a href="/projects" class="text-[--accent-blue] hover:underline flex items-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to all projects
+      </a>
+      
+      <h1 class="mb-4">{projectData.title}</h1>
+      
+      <div class="flex flex-wrap gap-2 mb-6">
+        {projectData.technologies.map(tech => (
+          <span class="text-sm bg-black/40 px-3 py-1 rounded-full text-[--text-secondary]">{tech}</span>
+        ))}
+      </div>
+      
+      <div class="bg-black/30 border rounded-lg p-6 mb-8" style="border-color: var(--border-color);">
+        <p class="text-[--text-primary] text-lg">{projectData.description}</p>
+      </div>
+      
+      <div class="terminal-card mb-8">
+        <div class="w-full">
+          <h2 class="text-xl mb-4">Project Details</h2>
+          
+          <!-- This would be replaced with actual project details -->
+          <p class="mb-4">This is a detailed description of the {projectData.title} project. It includes information about the problem it solves, the approach taken, and the technologies used.</p>
+          
+          <h3 class="text-lg mb-2">Key Features</h3>
+          <ul class="list-disc pl-5 mb-4">
+            <li>Feature one description</li>
+            <li>Feature two description</li>
+            <li>Feature three description</li>
+          </ul>
+          
+          <h3 class="text-lg mb-2">Technical Challenges</h3>
+          <p>Description of the technical challenges faced during this project and how they were overcome.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout> 

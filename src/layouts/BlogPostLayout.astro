@@ -1,0 +1,58 @@
+---
+import Layout from './Layout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, publishDate, updatedDate, author, description, image, tags, lang } = post.data;
+const locale = lang as 'en' | 'ja';
+
+const formattedPublishDate = new Date(publishDate).toLocaleDateString(locale === 'en' ? 'en-US' : 'ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdatedDate = updatedDate ? new Date(updatedDate).toLocaleDateString(locale === 'en' ? 'en-US' : 'ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}) : null;
+---
+
+<Layout title={title} description={description} image={image} locale={locale}>
+  <article class="max-w-3xl mx-auto">
+    <div class="mb-8 animate-fade-in">
+      {image && <img src={image} alt={title} class="w-full h-64 sm:h-96 object-cover rounded-lg mb-6" />}
+      
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">{title}</h1>
+      
+      <div class="flex flex-wrap items-center text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <span>{formattedPublishDate}</span>
+        {formattedUpdatedDate && (
+          <span class="ml-4">
+            {locale === 'en' ? 'Updated' : '更新'}: {formattedUpdatedDate}
+          </span>
+        )}
+        {author && <span class="ml-4">{author}</span>}
+      </div>
+      
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag: string) => (
+            <a href={`/${locale === 'en' ? '' : 'ja/'}blog/tag/${tag}`} class="text-sm bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+              #{tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+    
+    <div class="prose prose-lg max-w-none dark:prose-invert animate-slide-up">
+      <slot />
+    </div>
+  </article>
+</Layout> 

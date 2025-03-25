@@ -1,0 +1,136 @@
+---
+import Layout from '@layouts/Layout.astro';
+import projectsData from '@data/projects.json';
+import type { Project } from '@types/project';
+
+
+export const prerender = true;
+
+const projects: Project[] = projectsData;
+---
+
+<Layout title="Projects | Wira">
+  <div class="container-custom py-8">
+    <div class="terminal-line mb-8">
+      <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects</span><span class="text-[--text-secondary]">$</span>
+      <span class="text-[--text-primary] ml-2">ls -la</span>
+    </div>
+    
+    <h1 class="mb-8 text-center">Projects</h1>
+    
+    <div class="project-loading mb-4 text-center" id="project-loading">
+      <span class="inline-block">
+        <span class="text-[--text-primary]">Loading projects</span>
+        <span class="dots">
+          <span class="dot">.</span>
+          <span class="dot">.</span>
+          <span class="dot">.</span>
+        </span>
+      </span>
+    </div>
+    
+    <div id="project-container" class="opacity-0 transition-opacity duration-500">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {projects.map((project, index) => (
+          <a href={project.link} class="block project-item" style={`--index: ${index % 9}`}>
+            <div class="project-card glow-effect h-full transform transition-all duration-300">
+              <div class="p-5">
+                {project.featured && (
+                  <div class="absolute top-3 right-3">
+                    <span class="text-xs bg-[--accent-green]/20 text-[--accent-green] px-2 py-1 rounded">Featured</span>
+                  </div>
+                )}
+                
+                <div class="terminal-header mb-2">
+                  <h3 class="text-[--accent-green] text-lg font-jetbrains">{project.title}</h3>
+                </div>
+                
+                <p class="text-[--text-primary] mb-4">{project.description}</p>
+                
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map(tech => (
+                    <span class="text-xs bg-black/40 px-2 py-1 rounded text-[--text-secondary]">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  @keyframes dotPulse {
+    0% { opacity: 0.2; }
+    20% { opacity: 1; }
+    100% { opacity: 0.2; }
+  }
+  
+  .dots .dot {
+    animation: dotPulse 1.4s infinite;
+    animation-fill-mode: both;
+  }
+  
+  .dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  .project-item {
+    transform: translateY(20px);
+    opacity: 0;
+    animation: projectAppear 0.5s forwards;
+    animation-delay: calc(var(--index) * 0.1s);
+  }
+
+  @keyframes projectAppear {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  // Reuse the same 3D hover effect code from Welcome.astro
+  document.addEventListener('DOMContentLoaded', () => {
+    const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+    
+    projectCards.forEach(card => {
+      // Add cursor position effect
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate position relative to card center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const deltaX = (x - centerX) / 20;
+        const deltaY = (y - centerY) / 20;
+        
+        // Apply subtle 3D rotation
+        card.style.transform = `perspective(1000px) rotateX(${-deltaY}deg) rotateY(${deltaX}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      
+      // Reset on mouse leave
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+      });
+      
+      // Click effect
+      card.addEventListener('mousedown', () => {
+        card.style.transform = 'perspective(1000px) scale3d(0.98, 0.98, 0.98)';
+      });
+      
+      card.addEventListener('mouseup', () => {
+        card.style.transform = 'perspective(1000px) scale3d(1.02, 1.02, 1.02)';
+      });
+    });
+  });
+</script> 

@@ -1,0 +1,422 @@
+---
+import { useTranslations } from '@utils/i18n';
+import { skills } from '@data/skills';  // Import the skills data properly
+import projectsData from '@data/projects.json';
+import type { Project } from '@types/project';
+
+
+export const prerender = true;
+
+interface Props {
+	locale?: 'en' | 'ja';
+}
+
+const { locale = 'en' } = Astro.props;
+const t = useTranslations(locale);
+
+// Filter to get only featured projects and limit to 2
+const featuredProjects: Project[] = projectsData
+	.filter(project => project.featured)
+	.slice(0, 2);
+---
+<div class="terminal-intro">
+	<div class="terminal-header">
+		<pre class="ascii-art mb-6">
+ __          ___                 _____           _    __      _ _       
+ \ \        / (_)               |  __ \         | |  / _|    | (_)      
+  \ \  /\  / / _ _ __ __ _      | |__) |__  _ __| |_| |_ ___ | |_  ___  
+   \ \/  \/ / | | '__/ _` |     |  ___/ _ \| '__| __|  _/ _ \| | |/ _ \ 
+    \  /\  /  | | | | (_| |     | |  | (_) | |  | |_| || (_) | | | (_) |
+     \/  \/   |_|_|  \__,_|     |_|   \___/|_|   \__|_| \___/|_|_|\___/ 
+    </pre>
+
+		<div class="typing-effect mb-8">
+			<div class="line">
+				<span class="command">whoami</span>
+				<span class="output">Wira - Senior Backend Engineer @ Sea</span>
+			</div>
+			<div class="line">
+				<span class="command">uname -a</span>
+				<span class="output">Human v3.5 Coffee-Powered x86_64</span>
+			</div>
+			<div class="line">
+				<span class="command">cat ~/about.txt</span>
+				<span class="output">
+					9+ years of experience in software engineering.
+					Fluent in Golang, Python, and NodeJS.
+					Passionate about building scalable microservices and distributed systems.
+					Currently learning Rust.
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="skill-section mb-12">
+		<div class="terminal-line mb-4">
+			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/skills</span><span class="text-[--text-secondary]">$</span>
+			<span class="text-[--text-primary] ml-2">ls -la | more</span>
+		</div>
+		
+		<div class="skill-carousel">
+			<div class="skill-loading mb-4 text-center" id="skill-loading">
+				<span class="inline-block">
+					Loading skills
+					<span class="dots">
+						<span class="dot">.</span>
+						<span class="dot">.</span>
+						<span class="dot">.</span>
+					</span>
+				</span>
+			</div>
+			
+			<div id="skill-slider" class="relative opacity-0 transition-opacity duration-500">
+				{Array(Math.ceil(skills.length / 4)).fill(0).map((_, slideIndex) => (
+					<div class={`skill-slide ${slideIndex === 0 ? 'active' : ''}`} data-index={slideIndex}>
+						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+							{skills.slice(slideIndex * 4, slideIndex * 4 + 4).map((skill, idx) => (
+								<div class="carousel-skill-card" style={`--index: ${idx}`}>
+									<div class="skill-logo mx-auto mb-4">
+										<img 
+											src={`/images/skills/${skill.icon || skill.name.toLowerCase().replace(/\s+/g, '-')}.svg`} 
+											alt={`${skill.name} logo`}
+											width="48"
+											height="48"
+										/>
+									</div>
+									<div class="text-center">
+										<h4 class="text-lg font-semibold m-0">{skill.name}</h4>
+										<p class="text-sm text-[#e0e0e0] mt-2">{skill.description}</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+			
+			<div class="carousel-indicators mt-6">
+				{Array(Math.ceil(skills.length / 4)).fill(0).map((_, i) => (
+					<button 
+						class={`carousel-indicator ${i === 0 ? 'active' : ''}`} 
+						data-index={i}
+						aria-label={`Slide ${i + 1}`}
+					></button>
+				))}
+			</div>
+		</div>
+	</div>
+	
+	<div class="project-section mb-8">
+		<div class="terminal-line mb-4">
+			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects</span><span class="text-[--text-secondary]">$</span>
+			<span class="text-[--text-primary] ml-2">ls | grep featured | head -2</span>
+		</div>
+		
+		<div class="project-loading mb-4 text-center" id="project-loading">
+			<span class="inline-block">
+				<span class="text-[--text-primary]">Loading projects</span>
+				<span class="dots">
+					<span class="dot">.</span>
+					<span class="dot">.</span>
+					<span class="dot">.</span>
+				</span>
+			</span>
+		</div>
+		
+		<div id="project-container" class="opacity-0 transition-opacity duration-500">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{featuredProjects.map(project => (
+					<a href={project.link} class="block project-item" style={`--index: ${featuredProjects.indexOf(project)}`}>
+						<div class="project-card glow-effect pulse-on-hover p-5 h-full transform transition-all duration-300">
+							<div class="terminal-header mb-2">
+								<h3 class="text-[--accent-green] text-lg font-jetbrains">{project.title}</h3>
+							</div>
+							<p class="text-[--text-primary]">{project.description}</p>
+							
+							<div class="mt-4 flex flex-wrap gap-2">
+								{project.technologies.map(tech => (
+									<span class="text-xs bg-black/40 px-2 py-1 rounded text-[--text-secondary]">{tech}</span>
+								))}
+							</div>
+							
+							<div class="mt-4 flex justify-end">
+								<span class="text-xs text-[--text-secondary] flex items-center">
+									<span class="inline-block w-2 h-2 rounded-full bg-[--accent-green] mr-1"></span>
+									view details
+								</span>
+							</div>
+						</div>
+					</a>
+				))}
+				
+				<a href="/projects" class="col-span-1 md:col-span-2 block project-item" style="--index: 2">
+					<div class="project-card text-center p-5 transform transition-all duration-300 hover:bg-black/50">
+						<p class="text-[--accent-green] font-jetbrains flex items-center justify-center">
+							<span>view more projects</span>
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+							</svg>
+						</p>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="contact-section">
+		<div class="terminal-line mb-4">
+			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/contact</span><span class="text-[--text-secondary]">$</span>
+			<span class="text-[--text-primary] ml-2">cat contact_info.md</span>
+		</div>
+		
+		<div class="p-4 border rounded hover:border-[--accent-green] transition-colors" style="border-color: var(--border-color);">
+			<p class="text-[--accent-green] mb-2">## Contact Information</p>
+			<p class="text-[#e0e0e0] mb-1">- Email: <a href="mailto:hello@ariwira.me" class="text-[--accent-blue] hover:underline">hello@ariwira.me</a></p>
+			<p class="text-[#e0e0e0] mb-1">- GitHub: <a href="https://github.com/prasetyowira" class="text-[--accent-blue] hover:underline">github.com/prasetyowira</a></p>
+			<p class="text-[#e0e0e0]">- LinkedIn: <a href="https://linkedin.com/in/ariwira" class="text-[--accent-blue] hover:underline">linkedin.com/in/ariwira</a></p>
+			<div class="mt-4">
+				<p class="text-[#e0e0e0]"> Want to work together or just have a chat?</p>
+				<p> <a href="/contact" class="text-[--accent-green] hover:underline">Click here to send me a message</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.terminal-intro {
+		font-family: 'JetBrains Mono', monospace;
+		color: #e0e0e0;
+	}
+	
+	.ascii-art {
+		color: var(--accent-green);
+		line-height: 1.2;
+		text-align: center;
+		font-size: 0.7rem;
+		overflow-x: auto;
+		white-space: pre;
+	}
+	
+	@media (min-width: 768px) {
+		.ascii-art {
+			font-size: 0.9rem;
+		}
+	}
+	
+	.typing-effect .line {
+		margin-bottom: 1rem;
+		overflow: hidden;
+	}
+	
+	.typing-effect .command {
+		color: var(--accent-green);
+		margin-right: 1rem;
+	}
+	
+	.typing-effect .command::before {
+		content: "$ ";
+		color: var(--text-secondary);
+	}
+	
+	.typing-effect .output {
+		color: #e0e0e0;
+		display: block;
+		padding-left: 1rem;
+		white-space: pre-wrap;
+	}
+	
+	.terminal-line {
+		font-family: 'JetBrains Mono', monospace;
+		margin-bottom: 0.5rem;
+	}
+	
+	@keyframes dotPulse {
+		0% { opacity: 0.2; }
+		20% { opacity: 1; }
+		100% { opacity: 0.2; }
+	}
+	
+	.dots .dot {
+		animation: dotPulse 1.4s infinite;
+		animation-fill-mode: both;
+	}
+	
+	.dots .dot:nth-child(2) {
+		animation-delay: 0.2s;
+	}
+	
+	.dots .dot:nth-child(3) {
+		animation-delay: 0.4s;
+	}
+
+	.project-item {
+		transform: translateY(20px);
+		opacity: 0;
+		animation: projectAppear 0.5s forwards;
+		animation-delay: calc(var(--index) * 0.2s);
+	}
+
+	@keyframes projectAppear {
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Project loading handling
+    const projectContainer = document.getElementById('project-container');
+    const projectLoading = document.getElementById('project-loading');
+    const projectItems = document.querySelectorAll('.project-item');
+    
+    // Function to handle project loading
+    function handleProjectsLoaded() {
+      if (projectContainer) projectContainer.style.opacity = '1';
+      if (projectLoading) projectLoading.style.display = 'none';
+    }
+    
+    // Check if there are project items to load
+    if (projectItems.length > 0) {
+      // Set a timeout to simulate loading (remove this in production)
+      setTimeout(() => {
+        handleProjectsLoaded();
+      }, 500);
+    } else {
+      // If no projects, still hide loading
+      handleProjectsLoaded();
+    }
+    
+    // Project cards 3D effect
+    const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+    
+    projectCards.forEach(card => {
+      // Add cursor position effect
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate position relative to card center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const deltaX = (x - centerX) / 20;
+        const deltaY = (y - centerY) / 20;
+        
+        // Apply subtle 3D rotation
+        card.style.transform = `perspective(1000px) rotateX(${-deltaY}deg) rotateY(${deltaX}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      
+      // Reset on mouse leave
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+      });
+      
+      // Click effect
+      card.addEventListener('mousedown', () => {
+        card.style.transform = 'perspective(1000px) scale3d(0.98, 0.98, 0.98)';
+      });
+      
+      card.addEventListener('mouseup', () => {
+        card.style.transform = 'perspective(1000px) scale3d(1.02, 1.02, 1.02)';
+      });
+    });
+    
+    // Enhanced infinite skills carousel
+    const skillSlides = document.querySelectorAll<HTMLElement>('.skill-slide');
+    const indicators = document.querySelectorAll<HTMLElement>('.carousel-indicator');
+    let currentSlide = 0;
+    const slideCount = skillSlides.length;
+    
+    if (slideCount <= 1) return; // No need for carousel if only one slide
+    
+    // Function to change slide with animation
+    const changeSlide = (newIndex: number) => {
+      // Handle wrapping around
+      if (newIndex >= slideCount) newIndex = 0;
+      if (newIndex < 0) newIndex = slideCount - 1;
+      
+      // Get the current active slide
+      const currentElement = skillSlides[currentSlide];
+      
+      // Add 'prev' class to current slide to animate it away to the left
+      currentElement.classList.remove('active');
+      currentElement.classList.add('prev');
+      
+      // After animation completes, remove the 'prev' class
+      setTimeout(() => {
+        currentElement.classList.remove('prev');
+      }, 800); // Match timing with CSS transition
+      
+      // Activate the new slide
+      skillSlides[newIndex].classList.add('active');
+      
+      // Update indicators
+      indicators.forEach((dot, i) => {
+        dot.classList.toggle('active', i === newIndex);
+      });
+      
+      // Update the current slide index
+      currentSlide = newIndex;
+    };
+    
+    // Add click event listeners to indicators
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        changeSlide(index);
+      });
+    });
+    
+    // Set up autoplay - advance slides every 4 seconds
+    let autoplayInterval = setInterval(() => {
+      changeSlide(currentSlide + 1);
+    }, 4000);
+    
+    // Pause autoplay on hover
+    const carousel = document.querySelector('.skill-carousel');
+    if (carousel) {
+      carousel.addEventListener('mouseenter', () => {
+        clearInterval(autoplayInterval);
+      });
+      
+      carousel.addEventListener('mouseleave', () => {
+        autoplayInterval = setInterval(() => {
+          changeSlide(currentSlide + 1);
+        }, 4000);
+      });
+    }
+    
+    // Initialize first slide
+    skillSlides[0].classList.add('active');
+    
+    // Handle skill images loading
+    const skillImages = document.querySelectorAll('.skill-logo img');
+    const skillSlider = document.getElementById('skill-slider');
+    const loadingElement = document.getElementById('skill-loading');
+    let imagesLoaded = 0;
+    
+    function checkAllImagesLoaded() {
+      imagesLoaded++;
+      if (imagesLoaded >= skillImages.length) {
+        if (skillSlider) skillSlider.style.opacity = '1';
+        if (loadingElement) loadingElement.style.display = 'none';
+      }
+    }
+    
+    skillImages.forEach(img => {
+      if ((img as HTMLImageElement).complete) {
+        checkAllImagesLoaded();
+      } else {
+        img.addEventListener('load', checkAllImagesLoaded);
+        img.addEventListener('error', checkAllImagesLoaded); // Count errors as loaded to avoid blocking
+      }
+    });
+    
+    // If there are no images, still hide loading
+    if (skillImages.length === 0) {
+      if (skillSlider) skillSlider.style.opacity = '1';
+      if (loadingElement) loadingElement.style.display = 'none';
+    }
+  });
+</script>

@@ -1,0 +1,121 @@
+---
+title: "Getting Started with Rust for Go Developers"
+description: "A comprehensive guide to Rust for developers with Go experience"
+publishDate: 2023-06-15
+author: "Wira"
+image: "/images/blog/rust-for-go-devs.jpg"
+tags: ["rust", "golang", "programming"]
+lang: "en"
+---
+
+# Getting Started with Rust for Go Developers
+
+As a Go developer for many years, I recently found myself exploring Rust. This post shares my experience transitioning between these two powerful languages, highlighting similarities, differences, and practical tips.
+
+## Why Rust?
+
+Go and Rust, while both modern systems programming languages, serve different needs:
+
+- **Go** excels at building networked services with simplicity and readability
+- **Rust** prioritizes performance, memory safety, and fine-grained control without a garbage collector
+
+## Memory Management: The Big Difference
+
+The most significant adjustment when moving from Go to Rust is understanding Rust's ownership system:
+
+```rust
+fn main() {
+    // Variable binding
+    let s1 = String::from("hello"); // s1 owns this string
+    
+    // This moves ownership to s2, s1 is no longer valid!
+    let s2 = s1;
+    
+    // This would cause a compile error
+    // println!("s1: {}", s1);
+    
+    // This works fine
+    println!("s2: {}", s2);
+}
+```
+
+In Go, you'd simply use variables without worrying about who "owns" them. The garbage collector handles memory cleanup. Rust's approach eliminates entire classes of bugs but requires more careful thinking.
+
+## Error Handling Approaches
+
+Go's error handling is explicit but simple:
+
+```go
+file, err := os.Open("file.txt")
+if err != nil {
+    log.Fatal(err)
+}
+// use file
+```
+
+Rust uses the `Result` type which enforces error handling:
+
+```rust
+let file = match File::open("file.txt") {
+    Ok(file) => file,
+    Err(error) => {
+        panic!("Problem opening the file: {:?}", error);
+    },
+};
+```
+
+Or more concisely with the `?` operator:
+
+```rust
+fn read_file() -> Result<String, io::Error> {
+    let mut file = File::open("file.txt")?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    Ok(contents)
+}
+```
+
+## Concurrency Models
+
+Go's goroutines and channels are beautifully simple:
+
+```go
+func main() {
+    messages := make(chan string)
+    
+    go func() {
+        messages <- "Hello from goroutine!"
+    }()
+    
+    msg := <-messages
+    fmt.Println(msg)
+}
+```
+
+Rust offers more options that are type-safe and prevent data races at compile time:
+
+```rust
+use std::thread;
+
+fn main() {
+    let handle = thread::spawn(|| {
+        "Hello from thread!"
+    });
+    
+    let result = handle.join().unwrap();
+    println!("{}", result);
+}
+```
+
+## Conclusion
+
+Learning Rust after Go has made me a better programmer overall. While the ownership concept initially slows you down, it forces you to think deeply about your code's memory patterns. 
+
+For Go developers approaching Rust, I recommend:
+
+1. Fully embrace the borrow checker instead of fighting it
+2. Start with small, focused projects
+3. Use the excellent `cargo` tooling to your advantage
+4. Read "The Book" (The Rust Programming Language)
+
+Have you made the transition from Go to Rust? I'd love to hear about your experience in the comments below. 

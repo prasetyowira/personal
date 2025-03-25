@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+- **Deployment Considerations**:
+  - Ensure all environment variables (e.g., API keys, database credentials) are securely stored in Vercel's environment settings.
+  - Configure Vercel's KV and other serverless functions correctly to handle scalability and performance needs.
+
