@@ -1,9 +1,8 @@
 ---
-import { useTranslations } from '@utils/i18n';
+import { useTranslations, getLocalizedUrl } from '@utils/i18n';
 import { skills } from '@data/skills';  // Import the skills data properly
 import projectsData from '@data/projects.json';
-import type { Project } from '@types/project';
-
+import type { Project } from 'src/types/project';
 
 export const prerender = true;
 
@@ -13,11 +12,18 @@ interface Props {
 
 const { locale = 'en' } = Astro.props;
 const t = useTranslations(locale);
+const isJapanese = locale === 'ja';
+const projectsUrl = getLocalizedUrl(locale, '/projects');
+const contactUrl = getLocalizedUrl(locale, '/contact');
 
 // Filter to get only featured projects and limit to 2
 const featuredProjects: Project[] = projectsData
 	.filter(project => project.featured)
-	.slice(0, 2);
+	.slice(0, 2)
+	.map(project => ({
+		...project,
+		link: getLocalizedUrl(locale, project.link)
+	}));
 ---
 <div class="terminal-intro">
 	<div class="terminal-header">
@@ -30,23 +36,18 @@ const featuredProjects: Project[] = projectsData
      \/  \/   |_|_|  \__,_|     |_|   \___/|_|   \__|_| \___/|_|_|\___/ 
     </pre>
 
-		<div class="typing-effect mb-8">
+		<div class="typing-effect mb-8 text-right">
 			<div class="line">
 				<span class="command">whoami</span>
-				<span class="output">Wira - Senior Backend Engineer @ Sea</span>
+				<span class="output">{t('terminal.whoami')}</span>
 			</div>
 			<div class="line">
 				<span class="command">uname -a</span>
-				<span class="output">Human v3.5 Coffee-Powered x86_64</span>
+				<span class="output">{t('terminal.uname')}</span>
 			</div>
 			<div class="line">
 				<span class="command">cat ~/about.txt</span>
-				<span class="output">
-					9+ years of experience in software engineering.
-					Fluent in Golang, Python, and NodeJS.
-					Passionate about building scalable microservices and distributed systems.
-					Currently learning Rust.
-				</span>
+				<span class="output">{t('terminal.about')}</span>
 			</div>
 		</div>
 	</div>
@@ -54,13 +55,13 @@ const featuredProjects: Project[] = projectsData
 	<div class="skill-section mb-12">
 		<div class="terminal-line mb-4">
 			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/skills</span><span class="text-[--text-secondary]">$</span>
-			<span class="text-[--text-primary] ml-2">ls -la | more</span>
+			<span class="text-[--text-primary] ml-2">{t('skills.command')}</span>
 		</div>
 		
 		<div class="skill-carousel">
 			<div class="skill-loading mb-4 text-center" id="skill-loading">
 				<span class="inline-block">
-					Loading skills
+					{t('skills.loading')}
 					<span class="dots">
 						<span class="dot">.</span>
 						<span class="dot">.</span>
@@ -69,7 +70,7 @@ const featuredProjects: Project[] = projectsData
 				</span>
 			</div>
 			
-			<div id="skill-slider" class="relative opacity-0 transition-opacity duration-500">
+			<div id="skill-slider" class="relative">
 				{Array(Math.ceil(skills.length / 4)).fill(0).map((_, slideIndex) => (
 					<div class={`skill-slide ${slideIndex === 0 ? 'active' : ''}`} data-index={slideIndex}>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -81,11 +82,13 @@ const featuredProjects: Project[] = projectsData
 											alt={`${skill.name} logo`}
 											width="48"
 											height="48"
+											loading="eager"
+											onerror="this.src='/images/skills/default.svg'"
 										/>
 									</div>
 									<div class="text-center">
 										<h4 class="text-lg font-semibold m-0">{skill.name}</h4>
-										<p class="text-sm text-[#e0e0e0] mt-2">{skill.description}</p>
+										<p class="text-sm text-[#e0e0e0] mt-2">{isJapanese && skill.description_ja ? skill.description_ja : skill.description}</p>
 									</div>
 								</div>
 							))}
@@ -109,12 +112,12 @@ const featuredProjects: Project[] = projectsData
 	<div class="project-section mb-8">
 		<div class="terminal-line mb-4">
 			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects</span><span class="text-[--text-secondary]">$</span>
-			<span class="text-[--text-primary] ml-2">ls | grep featured | head -2</span>
+			<span class="text-[--text-primary] ml-2">{t('projects.command')}</span>
 		</div>
 		
 		<div class="project-loading mb-4 text-center" id="project-loading">
 			<span class="inline-block">
-				<span class="text-[--text-primary]">Loading projects</span>
+				<span class="text-[--text-primary]">{t('projects.loading')}</span>
 				<span class="dots">
 					<span class="dot">.</span>
 					<span class="dot">.</span>
@@ -123,15 +126,19 @@ const featuredProjects: Project[] = projectsData
 			</span>
 		</div>
 		
-		<div id="project-container" class="opacity-0 transition-opacity duration-500">
+		<div id="project-container">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 				{featuredProjects.map(project => (
 					<a href={project.link} class="block project-item" style={`--index: ${featuredProjects.indexOf(project)}`}>
 						<div class="project-card glow-effect pulse-on-hover p-5 h-full transform transition-all duration-300">
 							<div class="terminal-header mb-2">
-								<h3 class="text-[--accent-green] text-lg font-jetbrains">{project.title}</h3>
+								<h3 class="text-[--accent-green] text-lg font-jetbrains">
+									{isJapanese && project.title_ja ? project.title_ja : project.title}
+								</h3>
 							</div>
-							<p class="text-[--text-primary]">{project.description}</p>
+							<p class="text-[--text-primary]">
+								{isJapanese && project.description_ja ? project.description_ja : project.description}
+							</p>
 							
 							<div class="mt-4 flex flex-wrap gap-2">
 								{project.technologies.map(tech => (
@@ -142,17 +149,17 @@ const featuredProjects: Project[] = projectsData
 							<div class="mt-4 flex justify-end">
 								<span class="text-xs text-[--text-secondary] flex items-center">
 									<span class="inline-block w-2 h-2 rounded-full bg-[--accent-green] mr-1"></span>
-									view details
+									{t('view.details')}
 								</span>
 							</div>
 						</div>
 					</a>
 				))}
 				
-				<a href="/projects" class="col-span-1 md:col-span-2 block project-item" style="--index: 2">
+				<a href={projectsUrl} class="col-span-1 md:col-span-2 block project-item" style="--index: 2">
 					<div class="project-card text-center p-5 transform transition-all duration-300 hover:bg-black/50">
 						<p class="text-[--accent-green] font-jetbrains flex items-center justify-center">
-							<span>view more projects</span>
+							<span>{t('view.more.projects')}</span>
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
 							</svg>
@@ -166,17 +173,17 @@ const featuredProjects: Project[] = projectsData
 	<div class="contact-section">
 		<div class="terminal-line mb-4">
 			<span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/contact</span><span class="text-[--text-secondary]">$</span>
-			<span class="text-[--text-primary] ml-2">cat contact_info.md</span>
+			<span class="text-[--text-primary] ml-2">{t('contact.command')}</span>
 		</div>
 		
 		<div class="p-4 border rounded hover:border-[--accent-green] transition-colors" style="border-color: var(--border-color);">
-			<p class="text-[--accent-green] mb-2">## Contact Information</p>
-			<p class="text-[#e0e0e0] mb-1">- Email: <a href="mailto:hello@ariwira.me" class="text-[--accent-blue] hover:underline">hello@ariwira.me</a></p>
-			<p class="text-[#e0e0e0] mb-1">- GitHub: <a href="https://github.com/prasetyowira" class="text-[--accent-blue] hover:underline">github.com/prasetyowira</a></p>
-			<p class="text-[#e0e0e0]">- LinkedIn: <a href="https://linkedin.com/in/ariwira" class="text-[--accent-blue] hover:underline">linkedin.com/in/ariwira</a></p>
+			<p class="text-[--accent-green] mb-2">{t('contact.title')}</p>
+			<p class="text-[#e0e0e0] mb-1">- {t('contact.email')} <a href="mailto:hello@ariwira.me" class="text-[--accent-blue] hover:underline">hello@ariwira.me</a></p>
+			<p class="text-[#e0e0e0] mb-1">- {t('contact.github')} <a href="https://github.com/prasetyowira" class="text-[--accent-blue] hover:underline">github.com/prasetyowira</a></p>
+			<p class="text-[#e0e0e0]">- {t('contact.linkedin')} <a href="https://linkedin.com/in/ariwira" class="text-[--accent-blue] hover:underline">linkedin.com/in/ariwira</a></p>
 			<div class="mt-4">
-				<p class="text-[#e0e0e0]"> Want to work together or just have a chat?</p>
-				<p> <a href="/contact" class="text-[--accent-green] hover:underline">Click here to send me a message</a></p>
+				<p class="text-[#e0e0e0]">{t('contact.work')}</p>
+				<p> <a href={contactUrl} class="text-[--accent-green] hover:underline">{t('contact.message')}</a></p>
 			</div>
 		</div>
 	</div>
@@ -249,14 +256,32 @@ const featuredProjects: Project[] = projectsData
 		animation-delay: 0.4s;
 	}
 
+	/* Make project items visible by default, with animation */
 	.project-item {
-		transform: translateY(20px);
-		opacity: 0;
 		animation: projectAppear 0.5s forwards;
 		animation-delay: calc(var(--index) * 0.2s);
 	}
+	
+	/* Make skill slider visible by default */
+	#skill-slider {
+		opacity: 1 !important;
+	}
+	
+	/* Hide loading indicators by default */
+	#skill-loading, #project-loading {
+		display: none;
+	}
+	
+	/* Make project container visible by default */
+	#project-container {
+		opacity: 1 !important;
+	}
 
 	@keyframes projectAppear {
+		from {
+			transform: translateY(20px);
+			opacity: 0;
+		}
 		to {
 			transform: translateY(0);
 			opacity: 1;
@@ -264,8 +289,9 @@ const featuredProjects: Project[] = projectsData
 	}
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
+<script is:inline>
+  // Immediately executed function to avoid waiting for DOMContentLoaded
+  (function() {
     // Project loading handling
     const projectContainer = document.getElementById('project-container');
     const projectLoading = document.getElementById('project-loading');
@@ -277,23 +303,15 @@ const featuredProjects: Project[] = projectsData
       if (projectLoading) projectLoading.style.display = 'none';
     }
     
-    // Check if there are project items to load
-    if (projectItems.length > 0) {
-      // Set a timeout to simulate loading (remove this in production)
-      setTimeout(() => {
-        handleProjectsLoaded();
-      }, 500);
-    } else {
-      // If no projects, still hide loading
-      handleProjectsLoaded();
-    }
+    // Show projects immediately, don't wait for a timeout
+    handleProjectsLoaded();
     
     // Project cards 3D effect
-    const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+    const projectCards = document.querySelectorAll('.project-card');
     
     projectCards.forEach(card => {
       // Add cursor position effect
-      card.addEventListener('mousemove', (e: MouseEvent) => {
+      card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -324,15 +342,22 @@ const featuredProjects: Project[] = projectsData
     });
     
     // Enhanced infinite skills carousel
-    const skillSlides = document.querySelectorAll<HTMLElement>('.skill-slide');
-    const indicators = document.querySelectorAll<HTMLElement>('.carousel-indicator');
+    const skillSlides = document.querySelectorAll('.skill-slide');
+    const indicators = document.querySelectorAll('.carousel-indicator');
     let currentSlide = 0;
     const slideCount = skillSlides.length;
+    
+    // Immediately show the skill slider regardless of loading state
+    const skillSlider = document.getElementById('skill-slider');
+    const loadingElement = document.getElementById('skill-loading');
+    
+    if (skillSlider) skillSlider.style.opacity = '1';
+    if (loadingElement) loadingElement.style.display = 'none';
     
     if (slideCount <= 1) return; // No need for carousel if only one slide
     
     // Function to change slide with animation
-    const changeSlide = (newIndex: number) => {
+    const changeSlide = (newIndex) => {
       // Handle wrapping around
       if (newIndex >= slideCount) newIndex = 0;
       if (newIndex < 0) newIndex = slideCount - 1;
@@ -390,33 +415,14 @@ const featuredProjects: Project[] = projectsData
     // Initialize first slide
     skillSlides[0].classList.add('active');
     
-    // Handle skill images loading
+    // Register image load events but don't block display
     const skillImages = document.querySelectorAll('.skill-logo img');
-    const skillSlider = document.getElementById('skill-slider');
-    const loadingElement = document.getElementById('skill-loading');
-    let imagesLoaded = 0;
-    
-    function checkAllImagesLoaded() {
-      imagesLoaded++;
-      if (imagesLoaded >= skillImages.length) {
-        if (skillSlider) skillSlider.style.opacity = '1';
-        if (loadingElement) loadingElement.style.display = 'none';
-      }
-    }
-    
     skillImages.forEach(img => {
-      if ((img as HTMLImageElement).complete) {
-        checkAllImagesLoaded();
-      } else {
-        img.addEventListener('load', checkAllImagesLoaded);
-        img.addEventListener('error', checkAllImagesLoaded); // Count errors as loaded to avoid blocking
-      }
+      // We'll still track loading but won't hide content while waiting
+      img.addEventListener('error', () => {
+        // Add fallback for failed images
+        img.src = '/images/skills/default.svg';
+      });
     });
-    
-    // If there are no images, still hide loading
-    if (skillImages.length === 0) {
-      if (skillSlider) skillSlider.style.opacity = '1';
-      if (loadingElement) loadingElement.style.display = 'none';
-    }
-  });
+  })();
 </script>
