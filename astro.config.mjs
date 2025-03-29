@@ -21,7 +21,10 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [
     vue(),
-    mdx(),
+    mdx({
+      syntaxHighlight: 'shiki',
+      shikiConfig: { theme: 'dracula' },
+    }),
     sitemap({
       i18n: {
         defaultLocale: 'en',

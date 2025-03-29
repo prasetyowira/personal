@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import BlogList from '@components/BlogList.astro';
 import { getCollection } from 'astro:content';
+import { getLocalizedUrl } from '@utils/i18n';
 
 // Get all blog posts for Japanese
 const blogPosts = await getCollection('blog', ({ data }) => {
@@ -19,24 +20,24 @@ const locale = 'ja';
 ---
 
 <Layout title="ブログ | Wira ポートフォリオ" locale={locale}>
-  <section class="max-w-screen-xl mx-auto">
+  <section class="container-custom py-8">
     <div class="text-center mb-12">
-      <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-white animate-fade-in">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-[--text-primary]">
         ブログ
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in">
+      <p class="text-xl text-[--text-secondary] max-w-2xl mx-auto">
         ソフトウェアエンジニアリング、プログラミング言語、テクノロジーに関する洞察、チュートリアル、考えを共有します。
       </p>
     </div>
 
     {allTags.length > 0 && (
-      <div class="mb-12 animate-slide-up">
-        <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">トピックで探す:</h2>
+      <div class="mb-12">
+        <h2 class="text-lg font-medium text-[--text-primary] mb-4">トピックで探す:</h2>
         <div class="flex flex-wrap gap-2">
           {allTags.map(tag => (
             <a 
-              href={`/ja/blog/tag/${tag}`}
-              class="text-sm bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              href={getLocalizedUrl(locale, `/blog/tag/${tag}`)}
+              class="text-sm bg-[--background-secondary] rounded-full px-3 py-1 text-[--text-primary] hover:bg-[--background-hover] transition-colors"
             >
               #{tag}
             </a>

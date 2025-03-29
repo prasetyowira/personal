@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getLocalizedUrl } from '@utils/i18n';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
@@ -8,61 +9,70 @@ interface Props {
 
 const { posts, locale } = Astro.props;
 const isJapanese = locale === 'ja';
+
+// Helper function to get the clean slug without language directory
+const getCleanSlug = (entry: CollectionEntry<'blog'>) => {
+  const id = entry.id || '';
+  return id.split('/').pop() || id;
+};
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
   {posts.length > 0 ? (
-    posts.map(post => (
-      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col h-full transition-transform hover:translate-y-[-5px]">
-        {post.data.image && (
-          <img 
-            src={post.data.image} 
-            alt={post.data.title} 
-            class="w-full h-48 object-cover" 
-            onError="this.src='/images/blog/placeholder.svg'"
-          />
-        )}
-        <div class="p-6 flex-grow">
-          <div class="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-2">
-            <span>{new Date(post.data.publishDate).toLocaleDateString(locale === 'en' ? 'en-US' : 'ja-JP', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}</span>
-            <span class="mx-2">•</span>
-            <span>{isJapanese ? '読了時間: 5分' : '5 min read'}</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{post.data.title}</h3>
-          <p class="text-gray-700 dark:text-gray-300 mb-4">{post.data.description}</p>
-          {post.data.tags && (
-            <div class="flex flex-wrap gap-2 mb-4">
-              {post.data.tags.map((tag: string) => (
-                <a 
-                  href={`/${locale === 'en' ? '' : 'ja/'}blog/tag/${tag}`}
-                  class="text-xs bg-gray-200 dark:bg-gray-700 rounded-full px-2 py-1 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                  #{tag}
-                </a>
-              ))}
-            </div>
+    posts.map(post => {
+      const cleanSlug = getCleanSlug(post);
+      return (
+        <div class="bg-[--card-bg] rounded-lg overflow-hidden shadow-lg flex flex-col h-full transition-transform hover:translate-y-[-5px]">
+          {post.data.image && (
+            <img 
+              src={post.data.image} 
+              alt={post.data.title} 
+              class="w-full h-48 object-cover" 
+              onerror="this.src='/images/blog/placeholder.svg'"
+            />
           )}
+          <div class="p-6 flex-grow">
+            <div class="flex items-center text-sm text-[--text-secondary] mb-2">
+              <span>{new Date(post.data.publishDate).toLocaleDateString(locale === 'en' ? 'en-US' : 'ja-JP', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}</span>
+              <span class="mx-2">•</span>
+              <span>{isJapanese ? '読了時間: 5分' : '5 min read'}</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-[--text-primary]">{post.data.title}</h3>
+            <p class="text-[--text-secondary] mb-4">{post.data.description}</p>
+            {post.data.tags && (
+              <div class="flex flex-wrap gap-2 mb-4">
+                {post.data.tags.map((tag: string) => (
+                  <a 
+                    href={getLocalizedUrl(locale, `/blog/tag/${tag}`)}
+                    class="text-xs bg-[--tag-bg] rounded-full px-2 py-1 text-[--tag-text] hover:bg-[--tag-bg-hover] transition-colors"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="p-6 pt-0">
+            <a 
+              href={getLocalizedUrl(locale, `/blog/${cleanSlug}`)} 
+              class="text-[--accent-blue] hover:underline"
+            >
+              {isJapanese ? '続きを読む →' : 'Read More →'}
+            </a>
+          </div>
         </div>
-        <div class="p-6 pt-0">
-          <a 
-            href={`/${locale === 'en' ? '' : 'ja/'}blog/${post.slug}`} 
-            class="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            {isJapanese ? '続きを読む →' : 'Read More →'}
-          </a>
-        </div>
-      </div>
-    ))
+      );
+    })
   ) : (
     <div class="col-span-2 text-center py-12">
-      <h3 class="text-xl font-medium text-gray-600 dark:text-gray-400">
-        {isJapanese ? 'まだ記事がありません。' : 'No posts available yet.'}
+      <h3 class="text-xl font-medium text-[--text-secondary]">
+        {isJapanese ? 'まだ投稿がありません。' : 'No posts available yet.'}
       </h3>
-      <p class="mt-2 text-gray-500 dark:text-gray-500">
+      <p class="mt-2 text-[--text-tertiary]">
         {isJapanese ? 'また後で確認してください。' : 'Please check back later.'}
       </p>
     </div>

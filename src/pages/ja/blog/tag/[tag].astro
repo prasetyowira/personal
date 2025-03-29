@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import BlogList from '@components/BlogList.astro';
 import { getCollection } from 'astro:content';
+import { getLocalizedUrl } from '@utils/i18n';
 
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog', ({ data }) => {
@@ -19,7 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.props;
-const locale = 'ja';
+const locale = 'ja' as const;
 
 // Get all blog posts with this tag
 const taggedPosts = await getCollection('blog', ({ data }) => {
@@ -30,19 +31,19 @@ const taggedPosts = await getCollection('blog', ({ data }) => {
 ---
 
 <Layout title={`#${tag} | ブログ | Wira ポートフォリオ`} locale={locale}>
-  <section class="max-w-screen-xl mx-auto">
+  <section class="container-custom py-8">
     <div class="mb-12">
-      <a href="/ja/blog" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline mb-4">
+      <a href={getLocalizedUrl(locale, '/blog')} class="inline-flex items-center text-[--accent-blue] hover:underline mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
         </svg>
-        すべての記事に戻る
+        すべての投稿に戻る
       </a>
-      <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-white animate-fade-in">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-[--text-primary]">
         #{tag}
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 animate-fade-in">
-        #{tag}のタグが付いた{taggedPosts.length}件の記事を表示しています
+      <p class="text-xl text-[--text-secondary]">
+        #{tag}のタグが付いた{taggedPosts.length}件の投稿を表示しています
       </p>
     </div>
 

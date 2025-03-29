@@ -8,6 +8,7 @@
   --bg-terminal: #121212;
   --text-primary: #e0e0e0;
   --text-secondary: #a0a0a0;
+  --text-tertiary: #808080;
   --accent-green: #00FF85;
   --accent-blue: #4A9FFF;
   --accent-amber: #FFCA28;
@@ -16,12 +17,19 @@
   --border-color: rgba(0, 255, 133, 0.5);
   --font-jetbrains: 'JetBrains Mono', monospace;
   --font-semibold: 'JetBrains Mono Variable', monospace;
+  --background-secondary: rgba(0, 0, 0, 0.3);
+  --background-hover: rgba(0, 255, 133, 0.1);
+  --card-bg: rgba(0, 0, 0, 0.2);
+  --tag-bg: rgba(0, 0, 0, 0.4);
+  --tag-bg-hover: rgba(0, 0, 0, 0.6);
+  --tag-text: #a0a0a0;
 }
 
 @theme {
   --bg-terminal: #121212;
   --text-primary: #e0e0e0;
   --text-secondary: #a0a0a0;
+  --text-tertiary: #808080;
   --accent-green: #00FF85;
   --accent-blue: #4A9FFF;
   --accent-amber: #FFCA28;
@@ -30,6 +38,12 @@
   --border-color: rgba(0, 255, 133, 0.5);
   --font-jetbrains: 'JetBrains Mono', monospace;
   --font-semibold: 'JetBrains Mono Variable', monospace;
+  --background-secondary: rgba(0, 0, 0, 0.3);
+  --background-hover: rgba(0, 255, 133, 0.1);
+  --card-bg: rgba(0, 0, 0, 0.2);
+  --tag-bg: rgba(0, 0, 0, 0.4);
+  --tag-bg-hover: rgba(0, 0, 0, 0.6);
+  --tag-text: #a0a0a0;
 }
 
 @layer base {

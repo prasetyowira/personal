@@ -1,20 +1,77 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BlogPostLayout from '@layouts/BlogPostLayout.astro';
 
-export async function getStaticPaths({ paginate }) {
+// We need to generate routes for all blog posts
+export async function getStaticPaths() {
   const blogEntries = await getCollection('blog', ({ data }) => {
     return data.lang === 'ja';
   });
   
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry, locale: 'ja' },
-  }));
+  console.log('All Japanese blog entry IDs:', blogEntries.map(entry => entry.id));
+  
+  return blogEntries.map(entry => {
+    // Extract just the filename part without the language directory
+    const slug = entry.id.split('/').pop() || entry.id;
+    
+    console.log(`Mapping entry ID ${entry.id} to slug ${slug}`);
+    
+    return {
+      params: { slug },
+    };
+  });
 }
 
-const { entry, locale } = Astro.props;
-const { Content } = await entry.render();
+// Get the current slug from URL parameters
+const { slug } = Astro.params;
+console.log(`Requested Japanese blog slug: ${slug}`);
+
+// First, try the most direct path - getting the entry by ID
+let entry;
+let Content;
+
+try {
+  // Try direct approach first
+  entry = await getEntry('blog', `ja/${slug}`);
+  if (entry) {
+    const rendered = await render(entry);
+    Content = rendered.Content;
+    console.log(`Successfully rendered post with ID: ja/${slug}`);
+  }
+} catch (error: any) {
+  console.log(`Direct entry lookup failed: ${error.message}`);
+  
+  // Try the fallback method
+  try {
+    // Look up all Japanese blog posts
+    const allBlogPosts = await getCollection('blog', ({ data }) => {
+      return data.lang === 'ja';
+    });
+
+    // Find the post with the matching slug
+    entry = allBlogPosts.find(post => {
+      const postSlug = post.id.split('/').pop() || post.id;
+      return postSlug === slug;
+    });
+
+    if (entry) {
+      const rendered = await render(entry);
+      Content = rendered.Content;
+      console.log(`Successfully rendered post with ID: ${entry.id}`);
+    } else {
+      console.error(`No matching blog post found for slug: ${slug}`);
+    }
+  } catch (error: any) {
+    console.error(`Failed to find or render post: ${error.message}`);
+  }
+}
+
+// If we couldn't find the post, redirect
+if (!entry || !Content) {
+  return Astro.redirect('/ja/blog');
+}
+
+const locale = 'ja';
 ---
 
 <BlogPostLayout post={entry} locale={locale}>

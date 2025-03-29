@@ -4,12 +4,11 @@ import projectsData from '@data/projects.json';
 import { useTranslations, getLocalizedUrl } from '@utils/i18n';
 import type { Project } from 'src/types/project';
 
-
 export const prerender = true;
 
-const locale = Astro.url.pathname.startsWith('/ja/') ? 'ja' : 'en';
+const locale = 'ja';
 const t = useTranslations(locale);
-const isJapanese = locale === 'ja';
+const isJapanese = true;
 
 // Process projects with localized links
 const projects: Project[] = projectsData.map(project => ({
@@ -18,18 +17,18 @@ const projects: Project[] = projectsData.map(project => ({
 }));
 ---
 
-<Layout title={isJapanese ? "プロジェクト | ウィラ" : "Projects | Wira"} locale={locale}>
+<Layout title="プロジェクト | ウィラ" locale={locale}>
   <div class="container-custom py-8">
     <div class="terminal-line mb-8">
       <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects</span><span class="text-[--text-secondary]">$</span>
       <span class="text-[--text-primary] ml-2">ls -la</span>
     </div>
     
-    <h1 class="mb-8 text-center">{isJapanese ? "プロジェクト" : "Projects"}</h1>
+    <h1 class="mb-8 text-center">プロジェクト</h1>
     
     <div class="project-loading mb-4 text-center" id="project-loading">
       <span class="inline-block">
-        <span class="text-[--text-primary]">{isJapanese ? "プロジェクトを読み込み中" : "Loading projects"}</span>
+        <span class="text-[--text-primary]">プロジェクトを読み込み中</span>
         <span class="dots">
           <span class="dot">.</span>
           <span class="dot">.</span>
@@ -46,7 +45,7 @@ const projects: Project[] = projectsData.map(project => ({
               <div class="p-5">
                 {project.featured && (
                   <div class="absolute top-3 right-3">
-                    <span class="text-xs bg-[--accent-green]/20 text-[--accent-green] px-2 py-1 rounded flex items-center justify-center" title={isJapanese ? "注目プロジェクト" : "Featured Project"}>
+                    <span class="text-xs bg-[--accent-green]/20 text-[--accent-green] px-2 py-1 rounded flex items-center justify-center" title="注目プロジェクト">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
                       </svg>
@@ -56,12 +55,12 @@ const projects: Project[] = projectsData.map(project => ({
                 
                 <div class="terminal-header mb-2">
                   <h3 class="text-[--accent-green] text-lg font-jetbrains">
-                    {isJapanese && project.title_ja ? project.title_ja : project.title}
+                    {project.title_ja ? project.title_ja : project.title}
                   </h3>
                 </div>
                 
                 <p class="text-[--text-primary] mb-4">
-                  {isJapanese && project.description_ja ? project.description_ja : project.description}
+                  {project.description_ja ? project.description_ja : project.description}
                 </p>
                 
                 <div class="flex flex-wrap gap-2 mb-4">

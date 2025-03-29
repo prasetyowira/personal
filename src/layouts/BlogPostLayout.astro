@@ -1,14 +1,16 @@
 ---
 import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
+import { getLocalizedUrl } from '@utils/i18n';
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  locale?: 'en' | 'ja';
 }
 
-const { post } = Astro.props;
+const { post, locale: propLocale } = Astro.props;
 const { title, publishDate, updatedDate, author, description, image, tags, lang } = post.data;
-const locale = lang as 'en' | 'ja';
+const locale = propLocale || (lang as 'en' | 'ja');
 
 const formattedPublishDate = new Date(publishDate).toLocaleDateString(locale === 'en' ? 'en-US' : 'ja-JP', {
   year: 'numeric',
@@ -24,35 +26,114 @@ const formattedUpdatedDate = updatedDate ? new Date(updatedDate).toLocaleDateStr
 ---
 
 <Layout title={title} description={description} image={image} locale={locale}>
-  <article class="max-w-3xl mx-auto">
-    <div class="mb-8 animate-fade-in">
-      {image && <img src={image} alt={title} class="w-full h-64 sm:h-96 object-cover rounded-lg mb-6" />}
-      
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4">{title}</h1>
-      
-      <div class="flex flex-wrap items-center text-sm text-gray-600 dark:text-gray-400 mb-4">
-        <span>{formattedPublishDate}</span>
-        {formattedUpdatedDate && (
-          <span class="ml-4">
-            {locale === 'en' ? 'Updated' : '更新'}: {formattedUpdatedDate}
-          </span>
+  <article class="container-custom py-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="mb-8">
+        {image && <img src={image} alt={title} class="w-full h-64 sm:h-96 object-cover rounded-lg mb-6" />}
+        
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-[--text-primary]">{title}</h1>
+        
+        <div class="flex flex-wrap items-center text-sm text-[--text-secondary] mb-4">
+          <span>{formattedPublishDate}</span>
+          {formattedUpdatedDate && (
+            <span class="ml-4">
+              {locale === 'en' ? 'Updated' : '更新'}: {formattedUpdatedDate}
+            </span>
+          )}
+          {author && <span class="ml-4">{author}</span>}
+        </div>
+        
+        {tags && tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag: string) => (
+              <a 
+                href={getLocalizedUrl(locale, `/blog/tag/${tag}`)} 
+                class="text-sm bg-[--background-secondary] rounded-full px-3 py-1 text-[--text-primary] hover:bg-[--background-hover] transition-colors"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
         )}
-        {author && <span class="ml-4">{author}</span>}
       </div>
       
-      {tags && tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-6">
-          {tags.map((tag: string) => (
-            <a href={`/${locale === 'en' ? '' : 'ja/'}blog/tag/${tag}`} class="text-sm bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-              #{tag}
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
-    
-    <div class="prose prose-lg max-w-none dark:prose-invert animate-slide-up">
-      <slot />
+      <div class="prose prose-lg max-w-none dark:prose-invert 
+                 prose-headings:text-[--text-primary] 
+                 prose-p:text-[--text-primary] 
+                 prose-a:text-[--accent-blue] 
+                 prose-strong:text-[--text-primary]
+                 prose-code:text-[--accent-green] 
+                 prose-pre:bg-[--background-secondary]">
+        <slot />
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-[--border-color]">
+        <a 
+          href={getLocalizedUrl(locale, '/blog')} 
+          class="text-[--accent-blue] hover:underline flex items-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {locale === 'en' ? 'Back to all posts' : 'すべての記事に戻る'}
+        </a>
+      </div>
     </div>
   </article>
-</Layout> 
+</Layout>
+
+<style is:global>
+  /* Add syntax highlighting styles for code blocks */
+  pre {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+  
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+  }
+  
+  .prose pre code {
+    color: var(--text-primary);
+    background-color: transparent;
+    padding: 0;
+  }
+  
+  /* Additional styles for MDX content */
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+  }
+  
+  .prose h1 {
+    font-size: 2.25em;
+  }
+  
+  .prose h2 {
+    font-size: 1.875em;
+  }
+  
+  .prose h3 {
+    font-size: 1.5em;
+  }
+  
+  .prose p {
+    margin-bottom: 1.25em;
+    line-height: 1.7;
+  }
+  
+  .prose img {
+    border-radius: 0.5rem;
+    margin: 1.5em 0;
+  }
+  
+  .prose blockquote {
+    border-left: 4px solid var(--accent-green);
+    padding-left: 1rem;
+    font-style: italic;
+    margin: 1.5em 0;
+    color: var(--text-secondary);
+  }
+</style> 
