@@ -1,0 +1,182 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { useTranslations } from '@utils/i18n';
+import experienceData from '@data/experience.json';
+import skillsData from '@data/skills.json';
+import techStackData from '@data/tech-stack.json';
+import interestsData from '@data/interests.json';
+import educationData from '@data/education.json';
+
+const locale = 'ja';
+const t = useTranslations(locale);
+---
+
+<Layout 
+  title="自己紹介 | ウィラ - バックエンドエンジニア & ソフトウェアアーキテクト"
+  description="9年以上の経験を持つシニアバックエンドエンジニア、ウィラについてもっと知ってください。Golang、Python、分散システムを専門としています。"
+  locale={locale}
+>
+  <div class="terminal-about">
+    <div class="terminal-header mb-8">
+      <h1 class="text-3xl md:text-4xl mb-4">$ {t('about.title')}</h1>
+      <p class="text-[--text-secondary] mb-6">{t('about.subtitle')}</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main Content -->
+      <div class="lg:col-span-2">
+        <div class="terminal-line mb-4">
+          <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/about</span><span class="text-[--text-secondary]">$</span>
+          <span class="text-[--text-primary] ml-2">{t('about.terminal.command')}</span>
+        </div>
+        
+        <div class="terminal-content p-4 border rounded bg-black/20 mb-8" style="border-color: var(--border-color);">
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.journey.title')}</h2>
+            <div class="terminal-text space-y-4">
+              <p>
+                私は9年以上のプロフェッショナル経験を持つベテランのバックエンドエンジニアで、現在はSea（Shopee）でシニアバックエンドエンジニアとして勤務しています。ソフトウェア開発の旅は、信頼性が高くスケーラブルなシステムを構築することへの深い興味から始まり、それ以来私のキャリアパスを導いてきました。
+              </p>
+              <p>
+                私の専門知識は、クリーンアーキテクチャ、オブザーバビリティ、保守可能なコードに焦点を当てた高性能マイクロサービスと分散システムの開発にあります。パフォーマンスの最適化、複雑な問題の解決、若手開発者のメンタリングに情熱を持っています。
+              </p>
+              <p>
+                キャリアを通じて、Golang、Python、NodeJSを広範囲に使用し、データベーステクノロジー、メッセージキュー、クラウドインフラストラクチャについての強い理解を深めてきました。現在、Rustを学ぶことで知識を拡大しています。
+              </p>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.experience.title')}</h2>
+            <div class="terminal-timeline space-y-6">
+              {experienceData.map((job, index) => (
+                <div class="timeline-item">
+                  <div class="flex items-start">
+                    <div class="terminal-bullet mr-3 mt-1.5">
+                      <div class={`w-3 h-3 rounded-full ${job.highlight ? 'bg-[--accent-green]' : 'bg-[--accent-blue]'}`}></div>
+                      {index !== experienceData.length - 1 && (
+                        <div class="h-full w-0.5 bg-[--border-color] ml-1.5 mt-1"></div>
+                      )}
+                    </div>
+                    <div>
+                      <div class="text-[--accent-blue] font-medium">{job.title}</div>
+                      <div class="text-[--text-primary]">{job.company} | {job.period.ja}</div>
+                      <ul class="list-disc list-inside mt-2 text-[--text-secondary]">
+                        {job.responsibilities.ja.map(item => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.education.title')}</h2>
+            <div class="terminal-text">
+              {educationData.map(edu => (
+                <div class="flex items-start mb-4">
+                  <div class="terminal-bullet mr-3 mt-1.5">
+                    <div class="w-3 h-3 rounded-full bg-[--accent-green]"></div>
+                  </div>
+                  <div>
+                    <div class="text-[--accent-blue] font-medium">{edu.degree.ja}</div>
+                    <div class="text-[--text-primary]">{edu.institution.ja} | {edu.period.ja}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="terminal-sidebar space-y-6">
+          <!-- Skills Section -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.skills.title')}</h3>
+            
+            {skillsData.map((skillCategory) => (
+              <div class="skill-category mb-4">
+                <h4 class="text-[--accent-blue] mb-2">{skillCategory.category.ja}</h4>
+                <div class="flex flex-wrap gap-2">
+                  {skillCategory.items.map((skill) => (
+                    <span class="px-2 py-1 bg-black/30 rounded text-sm border" style="border-color: var(--border-color);">
+                      {typeof skill === 'string' ? skill : skill.ja}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <!-- Current Tech Stack -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.current.stack')}</h3>
+            <ul class="space-y-2 text-[--text-secondary]">
+              {techStackData.map(tech => (
+                <li class="flex items-center">
+                  <span class="inline-block w-5 text-[--accent-blue]">→</span>
+                  <span>{tech.category.ja}: {tech.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <!-- Interests -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.interests.title')}</h3>
+            <ul class="space-y-2 text-[--text-secondary]">
+              {interestsData.map(interest => (
+                <li class="flex items-center">
+                  <span class="inline-block w-5 text-[--accent-blue]">→</span>
+                  <span>{interest.ja}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .terminal-about {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .terminal-line {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .terminal-text p {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  
+  .terminal-text p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .terminal-bullet {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+  
+  .terminal-bullet:last-child {
+    padding-bottom: 0;
+  }
+  
+  .terminal-bullet:last-child .h-full {
+    display: none;
+  }
+  
+  .timeline-item:last-child .terminal-bullet .h-full {
+    display: none;
+  }
+</style> 

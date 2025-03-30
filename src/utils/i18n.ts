@@ -33,6 +33,17 @@ export const ui = {
     'contact.message': 'Click here to send me a message',
     'view.details': 'view details',
     'view.more.projects': 'view more projects',
+    // About page translations
+    'about.title': 'About Me',
+    'about.subtitle': 'Senior Backend Engineer & Software Architect',
+    'about.terminal.command': 'cat about.md',
+    'about.experience.title': 'Experience',
+    'about.skills.title': 'Skills',
+    'about.education.title': 'Education',
+    'about.interests.title': 'Interests',
+    'about.download.resume': 'Download Resume',
+    'about.journey.title': 'My Journey',
+    'about.current.stack': 'Current Tech Stack',
   },
   ja: {
     'nav.home': 'ホーム',
@@ -65,6 +76,17 @@ export const ui = {
     'contact.message': 'ここをクリックしてメッセージを送信',
     'view.details': '詳細を見る',
     'view.more.projects': 'もっと見る',
+    // About page translations
+    'about.title': '自己紹介',
+    'about.subtitle': 'シニアバックエンドエンジニア＆ソフトウェアアーキテクト',
+    'about.terminal.command': 'cat about.md',
+    'about.experience.title': '経歴',
+    'about.skills.title': 'スキル',
+    'about.education.title': '学歴',
+    'about.interests.title': '興味・趣味',
+    'about.download.resume': '履歴書をダウンロード',
+    'about.journey.title': '私の道のり',
+    'about.current.stack': '現在の技術スタック',
   },
 };
 

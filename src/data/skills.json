@@ -1,0 +1,48 @@
+[
+  {
+    "category": {
+      "en": "Programming Languages",
+      "ja": "プログラミング言語"
+    },
+    "items": [
+      "Golang",
+      "Python",
+      "JavaScript/TypeScript",
+      "PHP",
+      {
+        "en": "Rust (Learning)",
+        "ja": "Rust (学習中)"
+      }
+    ]
+  },
+  {
+    "category": {
+      "en": "Backend Technologies",
+      "ja": "バックエンド技術"
+    },
+    "items": [
+      {
+        "en": "Microservices",
+        "ja": "マイクロサービス"
+      },
+      "REST APIs",
+      "gRPC",
+      "GraphQL",
+      "Docker",
+      "Kubernetes"
+    ]
+  },
+  {
+    "category": {
+      "en": "Databases",
+      "ja": "データベース"
+    },
+    "items": [
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "Redis",
+      "Elasticsearch"
+    ]
+  }
+] 

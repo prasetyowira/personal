@@ -1,0 +1,67 @@
+[
+  {
+    "title": "Senior Backend Engineer",
+    "company": "Sea (Shopee)",
+    "period": {
+      "en": "2020 - Present",
+      "ja": "2020年 - 現在"
+    },
+    "responsibilities": {
+      "en": [
+        "Lead the development of core microservices using Golang",
+        "Design and implement scalable distributed systems handling millions of requests",
+        "Optimize database queries and service performance",
+        "Mentor junior engineers and conduct technical interviews"
+      ],
+      "ja": [
+        "Golangを使用したコアマイクロサービスの開発をリード",
+        "何百万ものリクエストを処理するスケーラブルな分散システムの設計と実装",
+        "データベースクエリとサービスパフォーマンスの最適化",
+        "若手エンジニアのメンタリングと技術面接の実施"
+      ]
+    },
+    "highlight": true
+  },
+  {
+    "title": "Backend Engineer",
+    "company": "Tech Startup",
+    "period": {
+      "en": "2017 - 2020",
+      "ja": "2017年 - 2020年"
+    },
+    "responsibilities": {
+      "en": [
+        "Built RESTful APIs and microservices using NodeJS and Python",
+        "Implemented CI/CD pipelines and automated testing",
+        "Integrated third-party services and payment gateways"
+      ],
+      "ja": [
+        "NodeJSとPythonを使用したRESTful APIとマイクロサービスの構築",
+        "CI/CDパイプラインと自動テストの実装",
+        "サードパーティサービスと決済ゲートウェイの統合"
+      ]
+    },
+    "highlight": false
+  },
+  {
+    "title": "Software Developer",
+    "company": "Digital Agency",
+    "period": {
+      "en": "2014 - 2017",
+      "ja": "2014年 - 2017年"
+    },
+    "responsibilities": {
+      "en": [
+        "Developed web applications using PHP and JavaScript",
+        "Created custom CMS solutions for clients",
+        "Managed database design and optimization"
+      ],
+      "ja": [
+        "PHPとJavaScriptを使用したWebアプリケーションの開発",
+        "クライアント向けのカスタムCMSソリューションの作成",
+        "データベース設計と最適化の管理"
+      ]
+    },
+    "highlight": false
+  }
+] 

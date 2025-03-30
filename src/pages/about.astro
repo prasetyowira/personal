@@ -1,0 +1,188 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { useTranslations } from '@utils/i18n';
+import experienceData from '@data/experience.json';
+import skillsData from '@data/skills.json';
+import techStackData from '@data/tech-stack.json';
+import interestsData from '@data/interests.json';
+import educationData from '@data/education.json';
+
+const locale = 'en';
+const t = useTranslations(locale);
+---
+
+<Layout 
+  title="About Me | Wira - Backend Engineer & Software Architect"
+  description="Learn more about Wira, a senior backend engineer with 9+ years of experience in Golang, Python, and distributed systems."
+  locale={locale}
+>
+  <div class="terminal-about">
+    <div class="terminal-header mb-8">
+      <h1 class="text-3xl md:text-4xl mb-4">$ {t('about.title')}</h1>
+      <p class="text-[--text-secondary] mb-6">{t('about.subtitle')}</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main Content -->
+      <div class="lg:col-span-2">
+        <div class="terminal-line mb-4">
+          <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/about</span><span class="text-[--text-secondary]">$</span>
+          <span class="text-[--text-primary] ml-2">{t('about.terminal.command')}</span>
+        </div>
+        
+        <div class="terminal-content p-4 border rounded bg-black/20 mb-8" style="border-color: var(--border-color);">
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.journey.title')}</h2>
+            <div class="terminal-text space-y-4">
+              <p>
+                I'm a seasoned backend engineer with 9+ years of professional experience, currently working as a senior 
+                backend engineer at Sea (Shopee). My journey in software development began with a deep interest in building 
+                reliable and scalable systems, which has guided my career path ever since.
+              </p>
+              <p>
+                My expertise lies in developing high-performance microservices and distributed systems, with a 
+                focus on clean architecture, observability, and maintainable code. I'm passionate about optimizing 
+                performance, solving complex problems, and mentoring junior developers.
+              </p>
+              <p>
+                Throughout my career, I've worked extensively with Golang, Python, and NodeJS, developing a 
+                strong understanding of database technologies, message queues, and cloud infrastructure. 
+                Currently, I'm expanding my knowledge by learning Rust.
+              </p>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.experience.title')}</h2>
+            <div class="terminal-timeline space-y-6">
+              {experienceData.map((job, index) => (
+                <div class="timeline-item">
+                  <div class="flex items-start">
+                    <div class="terminal-bullet mr-3 mt-1.5">
+                      <div class={`w-3 h-3 rounded-full ${job.highlight ? 'bg-[--accent-green]' : 'bg-[--accent-blue]'}`}></div>
+                      {index !== experienceData.length - 1 && (
+                        <div class="h-full w-0.5 bg-[--border-color] ml-1.5 mt-1"></div>
+                      )}
+                    </div>
+                    <div>
+                      <div class="text-[--accent-blue] font-medium">{job.title}</div>
+                      <div class="text-[--text-primary]">{job.company} | {job.period.en}</div>
+                      <ul class="list-disc list-inside mt-2 text-[--text-secondary]">
+                        {job.responsibilities.en.map(item => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.education.title')}</h2>
+            <div class="terminal-text">
+              {educationData.map(edu => (
+                <div class="flex items-start mb-4">
+                  <div class="terminal-bullet mr-3 mt-1.5">
+                    <div class="w-3 h-3 rounded-full bg-[--accent-green]"></div>
+                  </div>
+                  <div>
+                    <div class="text-[--accent-blue] font-medium">{edu.degree.en}</div>
+                    <div class="text-[--text-primary]">{edu.institution.en} | {edu.period.en}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="terminal-sidebar space-y-6">
+          <!-- Skills Section -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.skills.title')}</h3>
+            
+            {skillsData.map((skillCategory) => (
+              <div class="skill-category mb-4">
+                <h4 class="text-[--accent-blue] mb-2">{skillCategory.category.en}</h4>
+                <div class="flex flex-wrap gap-2">
+                  {skillCategory.items.map((skill) => (
+                    <span class="px-2 py-1 bg-black/30 rounded text-sm border" style="border-color: var(--border-color);">
+                      {typeof skill === 'string' ? skill : skill.en}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <!-- Current Tech Stack -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.current.stack')}</h3>
+            <ul class="space-y-2 text-[--text-secondary]">
+              {techStackData.map(tech => (
+                <li class="flex items-center">
+                  <span class="inline-block w-5 text-[--accent-blue]">→</span>
+                  <span>{tech.category.en}: {tech.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <!-- Interests -->
+          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+            <h3 class="text-xl text-[--accent-green] mb-4">{t('about.interests.title')}</h3>
+            <ul class="space-y-2 text-[--text-secondary]">
+              {interestsData.map(interest => (
+                <li class="flex items-center">
+                  <span class="inline-block w-5 text-[--accent-blue]">→</span>
+                  <span>{interest.en}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .terminal-about {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .terminal-line {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .terminal-text p {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  
+  .terminal-text p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .terminal-bullet {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+  
+  .terminal-bullet:last-child {
+    padding-bottom: 0;
+  }
+  
+  .terminal-bullet:last-child .h-full {
+    display: none;
+  }
+  
+  .timeline-item:last-child .terminal-bullet .h-full {
+    display: none;
+  }
+</style> 

@@ -1,0 +1,44 @@
+[
+  {
+    "category": {
+      "en": "Language",
+      "ja": "言語"
+    },
+    "value": "Golang"
+  },
+  {
+    "category": {
+      "en": "Framework",
+      "ja": "フレームワーク"
+    },
+    "value": "Gin, Echo"
+  },
+  {
+    "category": {
+      "en": "Databases",
+      "ja": "データベース"
+    },
+    "value": "PostgreSQL, Redis"
+  },
+  {
+    "category": {
+      "en": "Message Queue",
+      "ja": "メッセージキュー"
+    },
+    "value": "Kafka, RabbitMQ"
+  },
+  {
+    "category": {
+      "en": "Cloud",
+      "ja": "クラウド"
+    },
+    "value": "AWS, GCP"
+  },
+  {
+    "category": {
+      "en": "DevOps",
+      "ja": "DevOps"
+    },
+    "value": "Docker, Kubernetes"
+  }
+] 
