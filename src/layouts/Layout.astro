@@ -6,6 +6,7 @@ import '@fontsource-variable/jetbrains-mono';
 import '@styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import  SpeedInsights  from "@vercel/speed-insights/astro"
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
 	title: string;
@@ -94,23 +95,7 @@ const isDev = import.meta.env.DEV;
 		</style>
 		
 		<SpeedInsights />
-		<!-- Vercel Analytics -->
-		<script is:inline define:vars={{ isDev }}>
-		(function() {
-		  // Add Vercel Analytics script dynamically
-		  const script = document.createElement('script');
-		  script.type = 'module';
-		  script.textContent = `
-			import { inject } from '@vercel/analytics';
-			
-			inject({
-			  mode: ${isDev ? '"development"' : '"production"'},
-			  debug: ${isDev}
-			});
-		  `;
-		  document.head.appendChild(script);
-		})();
-		</script>
+		<Analytics />
 	</head>
 	<body class="min-h-screen flex flex-col bg-[#121212] text-[#e0e0e0]">
 		<div class="terminal-window">
