@@ -1,67 +1,140 @@
 [
   {
-    "title": "Senior Backend Engineer",
-    "company": "Sea (Shopee)",
+    "title": "Senior Software Engineer",
+    "company": "Shopee R&D - Sea",
     "period": {
-      "en": "2020 - Present",
-      "ja": "2020年 - 現在"
+      "en": "September 2022 – Present",
+      "ja": "2022年9月 - 現在"
     },
     "responsibilities": {
       "en": [
-        "Lead the development of core microservices using Golang",
-        "Design and implement scalable distributed systems handling millions of requests",
-        "Optimize database queries and service performance",
-        "Mentor junior engineers and conduct technical interviews"
+        "Built a new and refactored existing real-time dashboard to utilize ClickHouse as the primary analytics database, replacing online transactional DB. Integrated Apache Flink as the ETL pipeline, reducing online DB load and infrastructure cost by 60%.",
+        "Developed and implemented complex software solutions to optimize business efficiency",
+        "Integrated 3rd Party Logistics, reducing onboarding time from 2 weeks to 1 week",
+        "Optimized and migrated services from Python to Golang, cutting cloud costs by 20%",
+        "Handled production debugging and service release deployments",
+        "Mentored junior engineers, improving team performance"
       ],
       "ja": [
-        "Golangを使用したコアマイクロサービスの開発をリード",
-        "何百万ものリクエストを処理するスケーラブルな分散システムの設計と実装",
-        "データベースクエリとサービスパフォーマンスの最適化",
-        "若手エンジニアのメンタリングと技術面接の実施"
+        "オンライントランザクションデータベースの代わりにClickHouseを主な分析データベースとして使用するために、リアルタイムダッシュボードを新規構築およびリファクタリングしました。Apache FlinkをETLパイプラインとして統合し、オンラインDBの負荷とインフラコストを60%削減しました。",
+        "複雑なソフトウェアソリューションを開発および実装し、業務効率を最適化",
+        "サードパーティロジスティクスとの統合を行い、オンボーディング期間を2週間から1週間に短縮",
+        "PythonからGolangへのサービス最適化と移行を行い、クラウドコストを20％削減",
+        "本番環境でのデバッグとサービスリリースの展開を担当",
+        "若手エンジニアのメンタリングを行い、チームのパフォーマンスを向上"
       ]
     },
     "highlight": true
   },
   {
-    "title": "Backend Engineer",
-    "company": "Tech Startup",
+    "title": "Senior Backend Engineer",
+    "company": "Logistics & Supply Chain Company",
     "period": {
-      "en": "2017 - 2020",
-      "ja": "2017年 - 2020年"
+      "en": "December 2021 – August 2022",
+      "ja": "2021年12月 - 2022年8月"
     },
     "responsibilities": {
       "en": [
-        "Built RESTful APIs and microservices using NodeJS and Python",
-        "Implemented CI/CD pipelines and automated testing",
-        "Integrated third-party services and payment gateways"
+        "Developed APIs and integrated with third-party applications",
+        "Built microservices using Golang and deployed applications on Kubernetes via GitLab CI",
+        "Developed gRPC-based intra-service integrations",
+        "Created Voucher & Promotion Systems and Driver Reward Systems"
       ],
       "ja": [
-        "NodeJSとPythonを使用したRESTful APIとマイクロサービスの構築",
-        "CI/CDパイプラインと自動テストの実装",
-        "サードパーティサービスと決済ゲートウェイの統合"
+        "APIを開発し、サードパーティアプリケーションとの統合を行う",
+        "Golangを使用したマイクロサービスを構築し、GitLab CIを通じてKubernetesにアプリケーションをデプロイ",
+        "gRPCベースのサービス間統合を開発",
+        "バウチャーおよびプロモーションシステム、ドライバーリワードシステムを作成"
       ]
     },
     "highlight": false
   },
   {
-    "title": "Software Developer",
-    "company": "Digital Agency",
+    "title": "Lead Backend Developer",
+    "company": "Fintech Company",
     "period": {
-      "en": "2014 - 2017",
-      "ja": "2014年 - 2017年"
+      "en": "September 2021 – December 2021",
+      "ja": "2021年9月 - 2021年12月"
     },
     "responsibilities": {
       "en": [
-        "Developed web applications using PHP and JavaScript",
-        "Created custom CMS solutions for clients",
-        "Managed database design and optimization"
+        "Led backend development integrating microservices with major banks",
+        "Developed Loan Origination Systems and main platform features",
+        "Applied Test-Driven Development (TDD) to enhance code quality",
+        "Conducted code reviews and mentoring sessions for developers"
       ],
       "ja": [
-        "PHPとJavaScriptを使用したWebアプリケーションの開発",
-        "クライアント向けのカスタムCMSソリューションの作成",
-        "データベース設計と最適化の管理"
+        "主要銀行とのマイクロサービス統合のバックエンド開発をリード",
+        "ローンオリジネーションシステムとメインプラットフォーム機能を開発",
+        "テスト駆動開発（TDD）を適用してコード品質を向上",
+        "開発者向けのコードレビューとメンタリングセッションを実施"
+      ]
+    },
+    "highlight": false
+  },
+  {
+    "title": "Software Engineer",
+    "company": "Adtech Company",
+    "period": {
+      "en": "March 2018 – August 2019",
+      "ja": "2018年3月 - 2019年8月"
+    },
+    "responsibilities": {
+      "en": [
+        "Migrated monolithic systems to microservices architecture",
+        "Managed infrastructure optimization and reduced cloud costs by 30%",
+        "Improved application efficiency by 20%",
+        "Developed new product channels and media services"
+      ],
+      "ja": [
+        "モノリシックシステムをマイクロサービスアーキテクチャに移行",
+        "インフラ最適化を管理し、クラウドコストを30％削減",
+        "アプリケーションの効率を20％向上",
+        "新しい製品チャネルとメディアサービスを開発"
+      ]
+    },
+    "highlight": false
+  },
+  {
+    "title": "Backend Developer",
+    "company": "Creative Digital Agency",
+    "period": {
+      "en": "March 2017 – February 2018",
+      "ja": "2017年3月 - 2018年2月"
+    },
+    "responsibilities": {
+      "en": [
+        "Full stack development across multiple projects",
+        "Implemented microservices for various use cases",
+        "Handled database design and backend system optimizations"
+      ],
+      "ja": [
+        "複数のプロジェクトでのフルスタック開発",
+        "さまざまなユースケース向けにマイクロサービスを実装",
+        "データベース設計とバックエンドシステムの最適化を担当"
+      ]
+    },
+    "highlight": false
+  },
+  {
+    "title": "Freelance Web Developer",
+    "company": "Freelance",
+    "period": {
+      "en": "March 2016 – February 2017",
+      "ja": "2016年3月 - 2017年2月"
+    },
+    "responsibilities": {
+      "en": [
+        "Developed and maintained websites for various clients",
+        "Implemented responsive web designs and frontend-backend integration",
+        "Provided ongoing website maintenance and support"
+      ],
+      "ja": [
+        "様々なクライアント向けのウェブサイト開発および保守を担当",
+        "レスポンシブウェブデザインとフロントエンド・バックエンドの統合を実装",
+        "継続的なウェブサイトの保守とサポートを提供"
       ]
     },
     "highlight": false
   }
-] 
+]

@@ -9,10 +9,9 @@
       "Python",
       "JavaScript/TypeScript",
       "PHP",
-      {
-        "en": "Rust (Learning)",
-        "ja": "Rust (学習中)"
-      }
+      "C++",
+      "Scala",
+      { "en": "Rust (Learning)", "ja": "Rust (学習中)" }
     ]
   },
   {
@@ -21,15 +20,27 @@
       "ja": "バックエンド技術"
     },
     "items": [
-      {
-        "en": "Microservices",
-        "ja": "マイクロサービス"
-      },
+      { "en": "Microservices", "ja": "マイクロサービス" },
       "REST APIs",
       "gRPC",
       "GraphQL",
       "Docker",
-      "Kubernetes"
+      "Kubernetes",
+      "Kafka",
+      "RabbitMQ",
+      "Distributed Systems",
+      "Scalable Architecture",
+      "High Performance Computing",
+      "Caching Strategies",
+      "Data Pipeline",
+      "ETL",
+      "Data Streaming",
+      "AI-Driven APIs",
+      "Vector Databases",
+      "Generative AI Integration",
+      "Web3",
+      "Smart Contracts",
+      "ICP"
     ]
   },
   {
@@ -42,7 +53,38 @@
       "MySQL",
       "MongoDB",
       "Redis",
-      "Elasticsearch"
+      "Elasticsearch",
+      "Clickhouse"
+    ]
+  },
+  {
+    "category": {
+      "en": "Cloud & DevOps",
+      "ja": "クラウド & DevOps"
+    },
+    "items": [
+      "AWS",
+      "GCP",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Monitoring & Observability",
+      "GitOps",
+      "Security & Compliance",
+      { "en": "Basic Networking", "ja": "基本的なネットワーキング" }
+    ]
+  },
+  {
+    "category": {
+      "en": "Frontend Technologies",
+      "ja": "フロントエンド技術"
+    },
+    "items": [
+      "HTML/CSS",
+      "JavaScript/TypeScript",
+      "Vue.js",
+      "React",
+      "Tailwind CSS"
     ]
   }
-] 
+]

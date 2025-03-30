@@ -1,46 +1,112 @@
 [
   {
-    "id": "microservice-architecture",
-    "title": "Microservice Architecture",
-    "description": "Designed and implemented a scalable microservice architecture handling millions of requests per day.",
-    "title_ja": "マイクロサービスアーキテクチャ",
-    "description_ja": "毎日数百万のリクエストを処理するスケーラブルなマイクロサービスアーキテクチャを設計・実装しました。",
+    "id": "vector-icp",
+    "title": "VectorICP - The Pinecone VectorDB of Web 3.0",
+    "description": "Decentralized knowledge base management using vector embeddings and HNSW indexing on ICP.",
+    "title_ja": "VectorICP - Web 3.0のためのPinecone VectorDB",
+    "description_ja": "ICP上でのベクトル埋め込みとHNSWインデックスを使用した分散型知識ベース管理システム。",
     "featured": true,
-    "image": "/images/projects/microservice.svg",
-    "technologies": ["Golang", "Kubernetes", "gRPC", "PostgreSQL"],
-    "link": "/projects/microservice-architecture"
+    "image": "/images/projects/vector-icp.svg",
+    "technologies": ["Internet Computer Protocol", "Vector Embeddings", "HNSW Indexing", "Decentralized Storage"],
+    "link": "https://github.com/prasetyowira/ICP-Vector"
   },
   {
-    "id": "distributed-cache",
-    "title": "Distributed Cache System",
-    "description": "Built a high-performance distributed caching system that reduced database load by 70%.",
-    "title_ja": "分散キャッシュシステム",
-    "description_ja": "データベース負荷を70%削減した高性能な分散キャッシュシステムを構築しました。",
+    "id": "shorter-url-service",
+    "title": "Shorter - A URL Shortener Service",
+    "description": "A simple, efficient URL shortener service with custom short codes and QR code generation.",
+    "title_ja": "Shorter - URL短縮サービス",
+    "description_ja": "カスタムショートコードとQRコード生成機能を備えたシンプルで効率的なURL短縮サービス。",
+    "featured": false,
+    "image": "/images/projects/shorter.svg",
+    "technologies": ["Golang", "Chi", "SQLite", "LRU Cache", "QR Code Generation"],
+    "link": "https://github.com/prasetyowira/shorter"
+  },
+  {
+    "id": "openai-api-proxy",
+    "title": "OpenAI API Proxy for Cloudflare Workers",
+    "description": "Secure proxy server forwarding requests to OpenAI's API with CORS and idempotent support.",
+    "title_ja": "Cloudflare Workers用OpenAI APIプロキシ",
+    "description_ja": "CORSと冪等性をサポートしたOpenAI APIへの安全なプロキシサーバー。",
+    "featured": false,
+    "image": "/images/projects/openai-api-proxy.svg",
+    "technologies": ["Cloudflare Workers", "JavaScript", "OpenAI API", "Proxy Server", "CORS"],
+    "link": "https://github.com/prasetyowira/proxy"
+  },
+  {
+    "id": "warehouse-report-monitoring",
+    "title": "Warehouse Report & Monitoring System",
+    "description": "Migrated reporting data to a high-performance data warehouse and OLAP-based monitoring systems.",
+    "title_ja": "倉庫レポート＆モニタリングシステム",
+    "description_ja": "レポートデータを高性能データウェアハウスに移行し、OLAPベースのモニタリングシステムを導入しました。",
     "featured": true,
-    "image": "/images/projects/cache.svg",
-    "technologies": ["Redis", "Golang", "Prometheus", "Docker"],
-    "link": "/projects/distributed-cache"
+    "image": "/images/projects/warehouse.svg",
+    "technologies": ["Data Warehouse", "ETL", "OLAP", "Analytics"],
+    "link": ""
   },
   {
-    "id": "real-time-analytics",
-    "title": "Real-time Analytics Platform",
-    "description": "Developed a real-time analytics platform processing over 100k events per second.",
-    "title_ja": "リアルタイム分析プラットフォーム",
-    "description_ja": "毎秒10万以上のイベントを処理するリアルタイム分析プラットフォームを開発しました。",
-    "featured": false,
-    "image": "/images/projects/analytics.svg",
-    "technologies": ["Kafka", "Golang", "ClickHouse", "React"],
-    "link": "/projects/real-time-analytics"
+    "id": "web3-wallet-platform",
+    "title": "Web3 Wallet Platform",
+    "description": "Migrated to microservices architecture using Golang, integrating blockchain and Ethereum.",
+    "title_ja": "Web3ウォレットプラットフォーム",
+    "description_ja": "Golangを使用したマイクロサービスアーキテクチャへ移行し、ブロックチェーンとEthereumを統合しました。",
+    "featured": true,
+    "image": "/images/projects/web3.svg",
+    "technologies": ["Web3", "Blockchain", "Microservices", "Ethereum", "Smart Contracts"],
+    "link": ""
   },
   {
-    "id": "payment-gateway",
-    "title": "Payment Gateway Integration",
-    "description": "Implemented a secure payment gateway handling transactions across multiple currencies.",
-    "title_ja": "決済ゲートウェイ統合",
-    "description_ja": "複数の通貨で取引を処理する安全な決済ゲートウェイを実装しました。",
+    "id": "kafka-migration",
+    "title": "Kafka Migration - Web3 Wallet Platform",
+    "description": "Migrated messaging from Google Cloud Pub/Sub to Kafka, reducing costs by 40%.",
+    "title_ja": "Kafka移行 - Web3ウォレットプラットフォーム",
+    "description_ja": "メッセージングをGoogle Cloud Pub/SubからKafkaに移行し、コストを40%削減しました。",
     "featured": false,
-    "image": "/images/projects/payment.svg",
-    "technologies": ["Python", "Docker", "PostgreSQL", "Redis"],
-    "link": "/projects/payment-gateway"
+    "image": "/images/projects/kafka.svg",
+    "technologies": ["Kafka", "Cloud Migration", "GCP", "AWS", "Cost Optimization"],
+    "link": ""
+  },
+  {
+    "id": "web-manga-app",
+    "title": "Web Manga App",
+    "description": "Built high-performance web manga platform using Elasticsearch and dynamic image processing.",
+    "title_ja": "ウェブ漫画アプリ",
+    "description_ja": "Elasticsearchと動的な画像処理を使用した高性能なウェブ漫画プラットフォームを構築しました。",
+    "featured": false,
+    "image": "/images/projects/manga.svg",
+    "technologies": ["Elasticsearch", "Web Optimization", "Image Processing", "Performance Tuning"],
+    "link": ""
+  },
+  {
+    "id": "sls-chatbot",
+    "title": "SLS ChatBot - Shopee",
+    "description": "Developed internal chatbot to streamline troubleshooting and operational tasks.",
+    "title_ja": "SLSチャットボット - Shopee",
+    "description_ja": "トラブルシューティングと運用タスクを効率化するための内部チャットボットを開発しました。",
+    "featured": false,
+    "image": "/images/projects/chatbot.svg",
+    "technologies": ["Chatbot", "Automation", "Internal Tools", "Process Optimization"],
+    "link": ""
+  },
+  {
+    "id": "sicepat-superapps",
+    "title": "Sicepat SuperApps",
+    "description": "Implemented robust Voucher & Promotion System for Sicepat's SuperApps.",
+    "title_ja": "Sicepat SuperApps",
+    "description_ja": "SicepatのSuperApps向けに堅牢なバウチャー＆プロモーションシステムを実装しました。",
+    "featured": false,
+    "image": "/images/projects/superapps.svg",
+    "technologies": ["Backend Development", "Voucher System", "Microservices", "Scalability"],
+    "link": "https://play.google.com/store/apps/details?id=com.sicepat.consumer"
+  },
+  {
+    "id": "sicepat-instant-delivery",
+    "title": "Sicepat Instant Delivery - Partner Dashboard",
+    "description": "Developed partner dashboard for Sicepat's Instant Delivery, enhancing operational efficiency and user experience.",
+    "title_ja": "Sicepatインスタントデリバリー - パートナーダッシュボード",
+    "description_ja": "Sicepatのインスタントデリバリー向けのパートナーダッシュボードを開発し、業務効率とユーザーエクスペリエンスを向上しました。",
+    "featured": false,
+    "image": "/images/projects/sicepat-instant-dashboard.svg",
+    "technologies": ["Dashboard", "Backend Development", "User Experience", "Operational Efficiency"],
+    "link": ""
   }
-] 
+]
