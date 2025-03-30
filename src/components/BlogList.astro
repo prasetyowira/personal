@@ -47,10 +47,10 @@ const getCleanSlug = (entry: CollectionEntry<'blog'>) => {
               <div class="flex flex-wrap gap-2 mb-4">
                 {post.data.tags.map((tag: string) => (
                   <a 
-                    href={getLocalizedUrl(locale, `/blog/tag/${tag}`)}
+                    href={getLocalizedUrl(locale, `/blog/tag/${tag?.toLowerCase() || ''}`)}
                     class="text-xs bg-[--tag-bg] rounded-full px-2 py-1 text-[--tag-text] hover:bg-[--tag-bg-hover] transition-colors"
                   >
-                    #{tag}
+                    #{tag || ''}
                   </a>
                 ))}
               </div>

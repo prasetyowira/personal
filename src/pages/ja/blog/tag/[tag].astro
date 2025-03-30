@@ -4,33 +4,49 @@ import BlogList from '@components/BlogList.astro';
 import { getCollection } from 'astro:content';
 import { getLocalizedUrl } from '@utils/i18n';
 
+// Tell Astro to prerender this page as static HTML
+export const prerender = true;
+
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog', ({ data }) => {
     return data.lang === 'ja';
   });
   
+  // Get all unique tags
   const uniqueTags = [...new Set(
     blogPosts.flatMap(post => post.data.tags || [])
   )];
   
-  return uniqueTags.map(tag => ({
-    params: { tag },
-    props: { tag },
-  }));
+  console.log("Generated tag paths for Japanese:", uniqueTags);
+  
+  // For each tag, generate a path and include both the original tag and lowercase tag
+  return uniqueTags.map(tag => {
+    const lowercaseTag = tag?.toLowerCase() || '';
+    return {
+      params: { tag: lowercaseTag },
+      props: { 
+        tag: tag,  // Original tag with original casing
+        posts: blogPosts.filter(post => 
+          post.data.tags?.map(t => t?.toLowerCase() || '').includes(lowercaseTag)
+        ).sort((a, b) => 
+          new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+        )
+      },
+    };
+  });
 }
 
-const { tag } = Astro.props;
+// Get props passed from getStaticPaths
+const { tag, posts } = Astro.props;
 const locale = 'ja' as const;
 
-// Get all blog posts with this tag
-const taggedPosts = await getCollection('blog', ({ data }) => {
-  return data.lang === 'ja' && (data.tags || []).includes(tag);
-}).then(posts => posts.sort((a, b) => 
-  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
-));
+// Ensure taggedPosts is always an array, even if undefined
+const taggedPosts = posts || [];
+
+console.log(`Rendering tag page for: "${tag}" (Japanese) with ${taggedPosts.length} posts`);
 ---
 
-<Layout title={`#${tag} | ブログ | Wira ポートフォリオ`} locale={locale}>
+<Layout title={`#${tag || 'タグ'} | ブログ | Wira ポートフォリオ`} locale={locale}>
   <section class="container-custom py-8">
     <div class="mb-12">
       <a href={getLocalizedUrl(locale, '/blog')} class="inline-flex items-center text-[--accent-blue] hover:underline mb-4">
@@ -40,10 +56,10 @@ const taggedPosts = await getCollection('blog', ({ data }) => {
         すべての投稿に戻る
       </a>
       <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-[--text-primary]">
-        #{tag}
+        #{tag || 'タグ'}
       </h1>
       <p class="text-xl text-[--text-secondary]">
-        #{tag}のタグが付いた{taggedPosts.length}件の投稿を表示しています
+        #{tag || 'タグ'}のタグが付いた{taggedPosts.length}件の投稿を表示しています
       </p>
     </div>
 

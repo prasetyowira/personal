@@ -32,14 +32,14 @@ const locale = 'ja';
 
     {allTags.length > 0 && (
       <div class="mb-12">
-        <h2 class="text-lg font-medium text-[--text-primary] mb-4">トピックで探す:</h2>
+        <h2 class="text-lg font-medium text-[--text-primary] mb-4">トピックで探す：</h2>
         <div class="flex flex-wrap gap-2">
           {allTags.map(tag => (
             <a 
-              href={getLocalizedUrl(locale, `/blog/tag/${tag}`)}
+              href={getLocalizedUrl(locale, `/blog/tag/${tag?.toLowerCase() || ''}`)}
               class="text-sm bg-[--background-secondary] rounded-full px-3 py-1 text-[--text-primary] hover:bg-[--background-hover] transition-colors"
             >
-              #{tag}
+              #{tag || ''}
             </a>
           ))}
         </div>
