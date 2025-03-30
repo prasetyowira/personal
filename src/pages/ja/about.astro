@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { useTranslations } from '@utils/i18n';
+import { useTranslations, getExperienceYearsString } from '@utils/i18n';
 import experienceData from '@data/experience.json';
 import skillsData from '@data/about-skills.json';
 import techStackData from '@data/tech-stack.json';
@@ -9,11 +9,12 @@ import educationData from '@data/education.json';
 
 const locale = 'ja';
 const t = useTranslations(locale);
+const yearsExp = getExperienceYearsString();
 ---
 
 <Layout 
   title="自己紹介 | ウィラ - バックエンドエンジニア & ソフトウェアアーキテクト"
-  description="9年以上の経験を持つシニアバックエンドエンジニア、ウィラについてもっと知ってください。Golang、Python、分散システムを専門としています。"
+  description={`${yearsExp}年以上の経験を持つシニアバックエンドエンジニア、ウィラについてもっと知ってください。Golang、Python、分散システムを専門としています。`}
   locale={locale}
 >
   <div class="terminal-about">
@@ -35,7 +36,7 @@ const t = useTranslations(locale);
             <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.journey.title')}</h2>
             <div class="terminal-text space-y-4">
               <p>
-                私は9年以上のプロフェッショナル経験を持つベテランのバックエンドエンジニアで、現在はSea（Shopee）でシニアバックエンドエンジニアとして勤務しています。ソフトウェア開発の旅は、信頼性が高くスケーラブルなシステムを構築することへの深い興味から始まり、それ以来私のキャリアパスを導いてきました。
+                私は{yearsExp}年以上のプロフェッショナル経験を持つベテランのバックエンドエンジニアで、現在はSea（Shopee）でシニアバックエンドエンジニアとして勤務しています。ソフトウェア開発の旅は、信頼性が高くスケーラブルなシステムを構築することへの深い興味から始まり、それ以来私のキャリアパスを導いてきました。
               </p>
               <p>
                 私の専門知識は、クリーンアーキテクチャ、オブザーバビリティ、保守可能なコードに焦点を当てた高性能マイクロサービスと分散システムの開発にあります。パフォーマンスの最適化、複雑な問題の解決、若手開発者のメンタリングに情熱を持っています。

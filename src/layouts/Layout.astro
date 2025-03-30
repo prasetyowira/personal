@@ -29,6 +29,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const isDev = import.meta.env.DEV;
 ---
 
 <!DOCTYPE html>
@@ -90,6 +91,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			  --font-weight: 700;
 			}
 		</style>
+		
+		<!-- Vercel Analytics -->
+		<script is:inline define:vars={{ isDev }}>
+		(function() {
+		  // Add Vercel Analytics script dynamically
+		  const script = document.createElement('script');
+		  script.type = 'module';
+		  script.textContent = `
+			import { inject } from '@vercel/analytics';
+			
+			inject({
+			  mode: ${isDev ? '"development"' : '"production"'},
+			  debug: ${isDev}
+			});
+		  `;
+		  document.head.appendChild(script);
+		})();
+		</script>
 	</head>
 	<body class="min-h-screen flex flex-col bg-[#121212] text-[#e0e0e0]">
 		<div class="terminal-window">

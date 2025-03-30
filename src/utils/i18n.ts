@@ -1,5 +1,24 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
+// Function to calculate years of experience from start date
+export function getYearsOfExperience(startDate: Date = new Date('2016-03-01')): number {
+  const today = new Date();
+  let years = today.getFullYear() - startDate.getFullYear();
+  
+  // Adjust for incomplete years
+  const monthDiff = today.getMonth() - startDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < startDate.getDate())) {
+    years--;
+  }
+  
+  return years;
+}
+
+// Get years of experience as a string with "+" suffix
+export function getExperienceYearsString(): string {
+  return `${getYearsOfExperience()}+`;
+}
+
 // UI translations object
 export const ui = {
   en: {
@@ -19,7 +38,7 @@ export const ui = {
     // Welcome component translations
     'terminal.whoami': 'Wira - Senior Backend Engineer @ Sea',
     'terminal.uname': 'Human v3.5 Coffee-Powered x86_64',
-    'terminal.about': '9+ years of experience in software engineering.\nFluent in Golang, Python, and NodeJS.\nPassionate about building scalable microservices and distributed systems.\nCurrently learning Rust.',
+    'terminal.about': `${getExperienceYearsString()} years of experience in software engineering.\nFluent in Golang, Python, and NodeJS.\nPassionate about building scalable microservices and distributed systems.\nCurrently learning Rust.`,
     'skills.loading': 'Loading skills',
     'skills.command': 'ls -la | more',
     'projects.loading': 'Loading projects',
@@ -62,7 +81,7 @@ export const ui = {
     // Welcome component translations
     'terminal.whoami': 'ウィラ - シニアバックエンドエンジニア @ Sea',
     'terminal.uname': 'ヒューマン v3.5 コーヒー駆動 x86_64',
-    'terminal.about': 'ソフトウェアエンジニアとして9年以上の経験。\nGolang、Python、NodeJSに精通。\nスケーラブルなマイクロサービスと分散システムの構築に情熱を持つ。\n現在、Rustを学習中。',
+    'terminal.about': `ソフトウェアエンジニアとして${getExperienceYearsString()}年以上の経験。\nGolang、Python、NodeJSに精通。\nスケーラブルなマイクロサービスと分散システムの構築に情熱を持つ。\n現在、Rustを学習中。`,
     'skills.loading': 'スキルを読み込み中',
     'skills.command': 'ls -la | more',
     'projects.loading': 'プロジェクトを読み込み中',

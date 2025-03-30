@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { useTranslations } from '@utils/i18n';
+import { useTranslations, getExperienceYearsString } from '@utils/i18n';
 import experienceData from '@data/experience.json';
 import skillsData from '@data/about-skills.json';
 import techStackData from '@data/tech-stack.json';
@@ -9,11 +9,12 @@ import educationData from '@data/education.json';
 
 const locale = 'en';
 const t = useTranslations(locale);
+const yearsExp = getExperienceYearsString();
 ---
 
 <Layout 
   title="About Me | Wira - Backend Engineer & Software Architect"
-  description="Learn more about Wira, a senior backend engineer with 9+ years of experience in Golang, Python, and distributed systems."
+  description={`Learn more about Wira, a senior backend engineer with ${yearsExp} years of experience in Golang, Python, and distributed systems.`}
   locale={locale}
 >
   <div class="terminal-about">
@@ -35,7 +36,7 @@ const t = useTranslations(locale);
             <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.journey.title')}</h2>
             <div class="terminal-text space-y-4">
               <p>
-                I'm a seasoned backend engineer with 9+ years of professional experience, currently working as a senior 
+                I'm a seasoned backend engineer with {yearsExp} years of professional experience, currently working as a senior 
                 backend engineer at Sea (Shopee). My journey in software development began with a deep interest in building 
                 reliable and scalable systems, which has guided my career path ever since.
               </p>

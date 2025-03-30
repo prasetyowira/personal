@@ -1,5 +1,5 @@
 ---
-import { useTranslations, getLocalizedUrl } from '@utils/i18n';
+import { useTranslations, getLocalizedUrl, getExperienceYearsString } from '@utils/i18n';
 import { skills } from '@data/skills';  // Import the skills data properly
 import projectsData from '@data/projects.json';
 import type { Project } from 'src/types/project';
@@ -15,6 +15,7 @@ const t = useTranslations(locale);
 const isJapanese = locale === 'ja';
 const projectsUrl = getLocalizedUrl(locale, '/projects');
 const contactUrl = getLocalizedUrl(locale, '/contact');
+const yearsExp = getExperienceYearsString();
 
 // Filter to get only featured projects and limit to 2
 const featuredProjects: Project[] = projectsData
@@ -202,6 +203,13 @@ const featuredProjects: Project[] = projectsData
 		font-size: 0.7rem;
 		overflow-x: auto;
 		white-space: pre;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+	
+	/* Hide scrollbar for Chrome, Safari and Opera */
+	.ascii-art::-webkit-scrollbar {
+		display: none;
 	}
 	
 	@media (min-width: 768px) {
