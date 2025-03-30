@@ -23,7 +23,7 @@ const featuredProjects: Project[] = projectsData
 	.slice(0, 2)
 	.map(project => ({
 		...project,
-		link: getLocalizedUrl(locale, project.link)
+		link: getLocalizedUrl(locale, `/projects/${project.id}`)
 	}));
 ---
 <div class="terminal-intro">

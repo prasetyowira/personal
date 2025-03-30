@@ -8,7 +8,37 @@
     "featured": true,
     "image": "/images/projects/vector-icp.svg",
     "technologies": ["Internet Computer Protocol", "Vector Embeddings", "HNSW Indexing", "Decentralized Storage"],
-    "link": "https://github.com/prasetyowira/ICP-Vector"
+    "project_link": "https://github.com/prasetyowira/ICP-Vector",
+    "project_details": {
+      "description": "Decentralized knowledge base management using vector embeddings and HNSW indexing on ICP.",
+      "key_features": [
+        "Decentralized knowledge base management",
+        "Vector embeddings",
+        "HNSW indexing",
+        "Decentralized storage"
+      ],
+      "technical_challenges": [
+        "Decentralized knowledge base management",
+        "Vector embeddings",
+        "HNSW indexing",
+        "Decentralized storage"
+      ]
+    },
+    "project_details_ja": {
+      "description": "ICPにおけるベクトル埋め込みとHNSWインデックスを使用した分散型知識ベース管理システム。",
+      "key_features": [
+        "分散型知識ベース管理",
+        "ベクトル埋め込み",
+        "HNSWインデックス",
+        "分散型ストレージ"
+      ],
+      "technical_challenges": [
+        "分散型知識ベース管理の実装",
+        "ベクトル埋め込みの最適化",
+        "HNSWインデックスのパフォーマンス調整",
+        "分散型ストレージの信頼性確保"
+      ]
+    }
   },
   {
     "id": "shorter-url-service",
@@ -19,7 +49,39 @@
     "featured": false,
     "image": "/images/projects/shorter.svg",
     "technologies": ["Golang", "Chi", "SQLite", "LRU Cache", "QR Code Generation"],
-    "link": "https://github.com/prasetyowira/shorter"
+    "project_link": "https://github.com/prasetyowira/shorter",
+    "project_details": {
+      "description": "A lightweight yet powerful URL shortening service built with Golang and Chi router that provides custom short codes and QR code generation capabilities.",
+      "key_features": [
+        "Custom short code generation",
+        "QR code generation for shortened URLs",
+        "LRU cache for high-performance lookups",
+        "RESTful API for programmatic access",
+        "Analytics tracking for URL clicks"
+      ],
+      "technical_challenges": [
+        "Implementing efficient caching strategy for high-traffic URLs",
+        "Ensuring unique code generation at scale",
+        "Optimizing database queries for fast lookups",
+        "Securing the service against potential abuse"
+      ]
+    },
+    "project_details_ja": {
+      "description": "GolangとChiルーターで構築された軽量かつパワフルなURL短縮サービスで、カスタムショートコードとQRコード生成機能を提供します。",
+      "key_features": [
+        "カスタムショートコード生成",
+        "短縮URLのQRコード生成",
+        "高性能ルックアップのためのLRUキャッシュ",
+        "プログラムによるアクセスのためのRESTful API",
+        "URLクリックの分析追跡"
+      ],
+      "technical_challenges": [
+        "高トラフィックURLに対する効率的なキャッシング戦略の実装",
+        "スケールに対応した一意のコード生成の確保",
+        "高速ルックアップのためのデータベースクエリ最適化",
+        "潜在的な悪用に対するサービスのセキュリティ強化"
+      ]
+    }
   },
   {
     "id": "openai-api-proxy",
@@ -30,7 +92,41 @@
     "featured": false,
     "image": "/images/projects/openai-api-proxy.svg",
     "technologies": ["Cloudflare Workers", "JavaScript", "OpenAI API", "Proxy Server", "CORS"],
-    "link": "https://github.com/prasetyowira/proxy"
+    "project_link": "https://github.com/prasetyowira/proxy",
+    "project_details": {
+      "description": "A lightweight, secure proxy server that forwards requests to OpenAI's API, solving CORS issues for web applications while adding idempotent request support and security enhancements.",
+      "key_features": [
+        "CORS-enabled API access for web applications",
+        "Idempotent request handling to prevent duplicates",
+        "Request rate limiting and security headers",
+        "Transparent error handling and status codes",
+        "Low-latency performance with Cloudflare's edge network",
+        "IPv6 support"
+      ],
+      "technical_challenges": [
+        "Ensuring secure token handling without exposing API keys",
+        "Implementing proper CORS headers for browser compatibility",
+        "Managing request timeouts and retries for reliability",
+        "Optimizing for Cloudflare Workers' serverless environment"
+      ]
+    },
+    "project_details_ja": {
+      "description": "OpenAIのAPIへのリクエストを転送する軽量で安全なプロキシサーバーで、WebアプリケーションのためのCORS問題を解決し、冪等性リクエストのサポートとセキュリティ強化を追加しています。",
+      "key_features": [
+        "ウェブアプリケーション向けのCORS対応APIアクセス",
+        "重複を防ぐための冪等性リクエスト処理",
+        "リクエストレート制限とセキュリティヘッダー",
+        "透明性のあるエラー処理とステータスコード",
+        "Cloudflareのエッジネットワークによる低レイテンシーなパフォーマンス",
+        "IPv6サポート"
+      ],
+      "technical_challenges": [
+        "APIキーを露出させずに安全なトークン処理を確保",
+        "ブラウザ互換性のための適切なCORSヘッダーの実装",
+        "信頼性のためのリクエストタイムアウトと再試行の管理",
+        "Cloudflare Workersのサーバーレス環境に最適化"
+      ]
+    }
   },
   {
     "id": "warehouse-report-monitoring",
@@ -41,7 +137,39 @@
     "featured": true,
     "image": "/images/projects/warehouse.svg",
     "technologies": ["Data Warehouse", "ETL", "OLAP", "Analytics"],
-    "link": ""
+    "project_link": "",
+    "project_details": {
+      "description": "A comprehensive data warehousing solution that transformed legacy reporting systems into a high-performance, OLAP-based monitoring platform for real-time business intelligence and analytics.",
+      "key_features": [
+        "Real-time data processing and transformation",
+        "Interactive dashboards with drill-down capabilities",
+        "Automated report generation and distribution",
+        "internal chat bot alerting system"
+      ],
+      "technical_challenges": [
+        "Migrating terabytes of historical data without disruption",
+        "Designing efficient ETL pipelines for continuous data flow",
+        "Optimizing query performance for large datasets",
+        "Implementing proper data partitioning and indexing strategies",
+        "Ensuring data consistency across multiple source systems"
+      ]
+    },
+    "project_details_ja": {
+      "description": "従来のレポーティングシステムを高性能なOLAPベースのモニタリングプラットフォームに変換し、リアルタイムのビジネスインテリジェンスと分析を提供する包括的なデータウェアハウスソリューション。",
+      "key_features": [
+        "リアルタイムデータ処理と変換",
+        "ドリルダウン機能を備えたインタラクティブダッシュボード",
+        "自動レポート生成と配布",
+        "内部チャットボットアラートシステム"
+      ],
+      "technical_challenges": [
+        "中断なく数テラバイトの履歴データを移行",
+        "連続的なデータフローのための効率的なETLパイプラインの設計",
+        "大規模データセットのためのクエリパフォーマンスの最適化",
+        "適切なデータパーティショニングとインデックス戦略の実装",
+        "複数のソースシステム間でのデータ一貫性の確保"
+      ]
+    }
   },
   {
     "id": "web3-wallet-platform",
@@ -52,7 +180,41 @@
     "featured": true,
     "image": "/images/projects/web3.svg",
     "technologies": ["Web3", "Blockchain", "Microservices", "Ethereum", "Smart Contracts"],
-    "link": ""
+    "project_link": "",
+    "project_details": {
+      "description": "A secure, scalable Web3 wallet platform built with Golang microservices that enables seamless interaction with Ethereum and other blockchain networks for digital asset management.",
+      "key_features": [
+        "Multi-chain wallet support (Ethereum, Polygon, Binance Smart Chain)",
+        "Secure key management with hardware security module integration",
+        "Smart contract interaction and deployment",
+        "Transaction batching and gas optimization",
+        "OAuth2 and MFA authentication for enhanced security"
+      ],
+      "technical_challenges": [
+        "Ensuring wallet security while maintaining accessibility",
+        "Implementing reliable blockchain transaction monitoring",
+        "Designing stateless microservices for horizontal scaling",
+        "Managing consensus mechanisms across different blockchain networks",
+        "Optimizing RPC communication with blockchain nodes"
+      ]
+    },
+    "project_details_ja": {
+      "description": "デジタル資産管理のためにEthereumやその他のブロックチェーンネットワークとのシームレスな連携を可能にする、Golangマイクロサービスで構築された安全でスケーラブルなWeb3ウォレットプラットフォーム。",
+      "key_features": [
+        "マルチチェーンウォレットサポート（Ethereum、Polygon、Binance Smart Chain）",
+        "ハードウェアセキュリティモジュールを統合した安全な鍵管理",
+        "スマートコントラクトの対話とデプロイメント",
+        "トランザクションのバッチ処理とガス最適化",
+        "セキュリティ強化のためのOAuth2とMFA認証"
+      ],
+      "technical_challenges": [
+        "アクセシビリティを維持しながらウォレットセキュリティを確保",
+        "信頼性の高いブロックチェーントランザクション監視の実装",
+        "水平スケーリングのためのステートレスマイクロサービスの設計",
+        "異なるブロックチェーンネットワーク間での合意メカニズムの管理",
+        "ブロックチェーンノードとのRPC通信の最適化"
+      ]
+    }
   },
   {
     "id": "kafka-migration",
@@ -63,18 +225,82 @@
     "featured": false,
     "image": "/images/projects/kafka.svg",
     "technologies": ["Kafka", "Cloud Migration", "GCP", "AWS", "Cost Optimization"],
-    "link": ""
+    "project_link": "",
+    "project_details": {
+      "description": "A strategic migration project that replaced Google Cloud Pub/Sub with Apache Kafka for the Web3 Wallet Platform's messaging infrastructure, achieving 40% cost reduction while improving performance and reliability.",
+      "key_features": [
+        "Zero-downtime migration strategy with parallel systems",
+        "Custom Kafka connector development for specialized blockchain events",
+        "Automated monitoring and alerting system",
+        "Configurable message retention and compression policies",
+        "Horizontal scaling capabilities for handling traffic spikes"
+      ],
+      "technical_challenges": [
+        "Maintaining message ordering guarantees during migration",
+        "Designing efficient topic partitioning strategy",
+        "Implementing reliable exactly-once message delivery",
+        "Optimizing Kafka cluster configuration for blockchain events",
+        "Developing comprehensive integration tests for validation"
+      ]
+    },
+    "project_details_ja": {
+      "description": "Web3ウォレットプラットフォームのメッセージングインフラストラクチャのGoogle Cloud Pub/SubをApache Kafkaに置き換え、パフォーマンスと信頼性を向上させながら40%のコスト削減を達成した戦略的移行プロジェクト。",
+      "key_features": [
+        "並列システムによるゼロダウンタイム移行戦略",
+        "専門的なブロックチェーンイベント用のカスタムKafkaコネクタ開発",
+        "自動監視とアラートシステム",
+        "設定可能なメッセージ保持と圧縮ポリシー",
+        "トラフィックスパイクを処理するための水平スケーリング機能"
+      ],
+      "technical_challenges": [
+        "移行中のメッセージ順序保証の維持",
+        "効率的なトピックパーティショニング戦略の設計",
+        "信頼性の高い一度だけのメッセージ配信の実装",
+        "ブロックチェーンイベント用のKafkaクラスタ構成の最適化",
+        "検証のための包括的な統合テストの開発"
+      ]
+    }
   },
   {
     "id": "web-manga-app",
     "title": "Web Manga App",
-    "description": "Built high-performance web manga platform using Elasticsearch and dynamic image processing.",
+    "description": "Built high-performance web manga platform using Meilisearch and dynamic image processing.",
     "title_ja": "ウェブ漫画アプリ",
     "description_ja": "Elasticsearchと動的な画像処理を使用した高性能なウェブ漫画プラットフォームを構築しました。",
     "featured": false,
     "image": "/images/projects/manga.svg",
-    "technologies": ["Elasticsearch", "Web Optimization", "Image Processing", "Performance Tuning"],
-    "link": ""
+    "technologies": ["Meilisearch", "Web Optimization", "Image Processing", "Performance Tuning"],
+    "project_link": "",
+    "project_details": {
+      "description": "A high-performance web manga reading platform with advanced search capabilities powered by Elasticsearch and optimized image processing for smooth user experience across devices.",
+      "key_features": [
+        "Advanced search with content-aware filtering",
+        "Progressive image loading for faster page rendering",
+        "Personalized recommendations based on reading history"
+      ],
+      "technical_challenges": [
+        "Optimizing image delivery for various network conditions",
+        "Implementing efficient manga content indexing in Meilisearch",
+        "Building a responsive reader that works across all devices",
+        "Managing large media files with appropriate caching strategies",
+        "Developing an efficient content delivery pipeline"
+      ]
+    },
+    "project_details_ja": {
+      "description": "Elasticsearchによる高度な検索機能と、デバイス全体でスムーズなユーザー体験のための最適化された画像処理を備えた高性能なWebマンガ読書プラットフォーム。",
+      "key_features": [
+        "コンテンツ認識フィルタリングによる高度な検索",
+        "より高速なページレンダリングのためのプログレッシブ画像読み込み",
+        "読書履歴に基づくパーソナライズされたおすすめ"
+      ],
+      "technical_challenges": [
+        "様々なネットワーク状況に対応した画像配信の最適化",
+        "Meilisearchでの効率的なマンガコンテンツのインデックス作成",
+        "すべてのデバイスで動作するレスポンシブなリーダーの構築",
+        "適切なキャッシング戦略による大規模メディアファイルの管理",
+        "効率的なコンテンツ配信パイプラインの開発"
+      ]
+    }
   },
   {
     "id": "sls-chatbot",
@@ -85,7 +311,37 @@
     "featured": false,
     "image": "/images/projects/chatbot.svg",
     "technologies": ["Chatbot", "Automation", "Internal Tools", "Process Optimization"],
-    "link": ""
+    "project_link": "",
+    "project_details": {
+      "description": "An intelligent internal chatbot for Shopee that automates troubleshooting workflows and operational tasks, significantly reducing manual intervention and resolution time for common issues.",
+      "key_features": [
+        "Integration with monitoring and logging systems",
+        "Automated incident response and remediation",
+        "Knowledge base integration for self-learning capabilities",
+        "Task automation for routine operational procedures"
+      ],
+      "technical_challenges": [
+        "Securely integrating with multiple internal systems",
+        "Developing a robust conversational flow for complex troubleshooting",
+        "Creating a feedback loop for continuous improvement",
+        "large scale of data processing from logs and monitoring systems"
+      ]
+    },
+    "project_details_ja": {
+      "description": "トラブルシューティングのワークフローと運用タスクを自動化し、一般的な問題の手動介入と解決時間を大幅に削減するShopeeのインテリジェントな内部チャットボット。",
+      "key_features": [
+        "監視およびロギングシステムとの統合",
+        "インシデントの自動対応と修復",
+        "自己学習機能のためのナレッジベース統合",
+        "定型的な運用手順のタスク自動化"
+      ],
+      "technical_challenges": [
+        "複数の内部システムとの安全な統合",
+        "複雑なトラブルシューティングのための堅牢な会話フローの開発",
+        "継続的改善のためのフィードバックループの作成",
+        "ログと監視システムからの大規模データ処理"
+      ]
+    }
   },
   {
     "id": "sicepat-superapps",
@@ -96,7 +352,41 @@
     "featured": false,
     "image": "/images/projects/superapps.svg",
     "technologies": ["Backend Development", "Voucher System", "Microservices", "Scalability"],
-    "link": "https://play.google.com/store/apps/details?id=com.sicepat.consumer"
+    "project_link": "https://play.google.com/store/apps/details?id=com.sicepat.consumer",
+    "project_details": {
+      "description": "A comprehensive voucher and promotion system for Sicepat's SuperApps that enables complex discount rules, multiple campaign types, and real-time validation for millions of users.",
+      "key_features": [
+        "Rule-based voucher generation and validation",
+        "Multi-tier promotion campaigns with stacking rules",
+        "Real-time redemption tracking and analytics",
+        "Fraud detection and prevention mechanisms",
+        "API integration with external loyalty programs"
+      ],
+      "technical_challenges": [
+        "Designing a scalable architecture for peak promotional periods",
+        "Implementing complex business rules for voucher combinations",
+        "Ensuring transaction consistency during high-volume redemptions",
+        "Developing a flexible rule engine for diverse promotion types",
+        "Optimizing database performance for real-time validation"
+      ]
+    },
+    "project_details_ja": {
+      "description": "複雑な割引ルール、複数のキャンペーンタイプ、および数百万のユーザーのリアルタイム検証を可能にするSicepatのSuperApps向けの包括的なバウチャーとプロモーションシステム。",
+      "key_features": [
+        "ルールベースのバウチャー生成と検証",
+        "スタッキングルールを持つマルチティアプロモーションキャンペーン",
+        "リアルタイムの償還追跡と分析",
+        "不正検出と防止メカニズム",
+        "外部ロイヤルティプログラムとのAPI統合"
+      ],
+      "technical_challenges": [
+        "ピークプロモーション期間のためのスケーラブルなアーキテクチャの設計",
+        "バウチャーの組み合わせに対する複雑なビジネスルールの実装",
+        "大量の償還中のトランザクション一貫性の確保",
+        "多様なプロモーションタイプのための柔軟なルールエンジンの開発",
+        "リアルタイム検証のためのデータベースパフォーマンスの最適化"
+      ]
+    }
   },
   {
     "id": "sicepat-instant-delivery",
@@ -107,6 +397,40 @@
     "featured": false,
     "image": "/images/projects/sicepat-instant-dashboard.svg",
     "technologies": ["Dashboard", "Backend Development", "User Experience", "Operational Efficiency"],
-    "link": ""
+    "project_link": "https://play.google.com/store/apps/details?id=com.sicepat.consumer",
+    "project_details": {
+      "description": "A comprehensive partner dashboard for Sicepat's Instant Delivery service that provides real-time visibility, analytics, and management tools for delivery partners to optimize their operations.",
+      "key_features": [
+        "Real-time delivery tracking and management",
+        "Performance analytics and earning reports",
+        "Route optimization for efficient delivery planning",
+        "Automated payment processing and reconciliation",
+        "Intuitive mobile-first interface for on-the-go access"
+      ],
+      "technical_challenges": [
+        "Integrating with multiple delivery tracking systems",
+        "Building a responsive interface that works well on various devices",
+        "Implementing efficient data synchronization for offline capabilities",
+        "Designing a scalable architecture to handle thousands of concurrent users",
+        "Optimizing for low-bandwidth conditions for field operations"
+      ]
+    },
+    "project_details_ja": {
+      "description": "Sicepatのインスタントデリバリーサービスのパートナーが運用を最適化するためのリアルタイムの可視性、分析、および管理ツールを提供する包括的なパートナーダッシュボード。",
+      "key_features": [
+        "リアルタイム配送追跡と管理",
+        "パフォーマンス分析と収益レポート",
+        "効率的な配送計画のためのルート最適化",
+        "自動支払い処理と照合",
+        "外出先でのアクセスのための直感的なモバイルファーストインターフェース"
+      ],
+      "technical_challenges": [
+        "複数の配送追跡システムとの統合",
+        "様々なデバイスで適切に動作するレスポンシブなインターフェースの構築",
+        "オフライン機能のための効率的なデータ同期の実装",
+        "数千の同時ユーザーを処理するためのスケーラブルなアーキテクチャの設計",
+        "現場運用のための低帯域幅条件の最適化"
+      ]
+    }
   }
 ]

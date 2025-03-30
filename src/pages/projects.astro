@@ -14,7 +14,7 @@ const isJapanese = locale === 'ja';
 // Process projects with localized links
 const projects: Project[] = projectsData.map(project => ({
   ...project,
-  link: getLocalizedUrl(locale, project.link)
+  link: getLocalizedUrl(locale, `/projects/${project.id}`)
 }));
 ---
 

@@ -18,16 +18,24 @@ interface Props {
 }
 
 const { projectData } = Astro.props;
-const locale = 'en';
+const locale = 'ja';
 const t = useTranslations(locale);
 
 // Prepare data safely for TypeScript
-const keyFeatures = projectData.project_details?.key_features || [];
-const technicalChallenges = projectData.project_details?.technical_challenges || [];
-const projectDescription = projectData.project_details?.description || '';
+const keyFeatures = projectData.project_details_ja?.key_features || 
+                    projectData.project_details?.key_features || 
+                    [];
+                    
+const technicalChallenges = projectData.project_details_ja?.technical_challenges || 
+                           projectData.project_details?.technical_challenges || 
+                           [];
+                           
+const projectDescription = projectData.project_details_ja?.description || 
+                          projectData.project_details?.description || 
+                          '';
 ---
 
-<Layout title={`${projectData.title} | Wira`} locale={locale}>
+<Layout title={`${projectData.title_ja || projectData.title} | ウィラ`} locale={locale}>
   <div class="container-custom py-8">
     <div class="terminal-line mb-4">
       <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/projects/${projectData.id}</span><span class="text-[--text-secondary]">$</span>
@@ -39,10 +47,10 @@ const projectDescription = projectData.project_details?.description || '';
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        {t('backToAllPosts')}
+        プロジェクト一覧に戻る
       </a>
       
-      <h1 class="mb-4">{projectData.title}</h1>
+      <h1 class="mb-4">{projectData.title_ja || projectData.title}</h1>
       
       <div class="flex flex-wrap gap-2 mb-6">
         {projectData.technologies.map(tech => (
@@ -51,7 +59,7 @@ const projectDescription = projectData.project_details?.description || '';
       </div>
       
       <div class="bg-black/30 border rounded-lg p-6 mb-8" style="border-color: var(--border-color);">
-        <p class="text-[--text-primary] text-lg">{projectData.description}</p>
+        <p class="text-[--text-primary] text-lg">{projectData.description_ja || projectData.description}</p>
       </div>
       
       {projectData.project_link && (
@@ -61,22 +69,22 @@ const projectDescription = projectData.project_details?.description || '';
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-            View Project
+            プロジェクトを見る
           </a>
         </div>
       )}
       
       <div class="terminal-card mb-8">
         <div class="w-full">
-          <h2 class="text-xl mb-4">Project Details</h2>
+          <h2 class="text-xl mb-4">プロジェクト詳細</h2>
           
-          {projectData.project_details && (
+          {(projectData.project_details_ja || projectData.project_details) && (
             <div>
               <p class="mb-6">{projectDescription}</p>
               
               {keyFeatures.length > 0 && (
                 <div class="mb-6">
-                  <h3 class="text-lg mb-3 text-[--accent-green]">Key Features</h3>
+                  <h3 class="text-lg mb-3 text-[--accent-green]">主な機能</h3>
                   <ul class="list-disc pl-6 space-y-2">
                     {keyFeatures.map(feature => (
                       <li>{feature}</li>
@@ -87,7 +95,7 @@ const projectDescription = projectData.project_details?.description || '';
               
               {technicalChallenges.length > 0 && (
                 <div>
-                  <h3 class="text-lg mb-3 text-[--accent-green]">Technical Challenges</h3>
+                  <h3 class="text-lg mb-3 text-[--accent-green]">技術的課題</h3>
                   <ul class="list-disc pl-6 space-y-2">
                     {technicalChallenges.map(challenge => (
                       <li>{challenge}</li>
