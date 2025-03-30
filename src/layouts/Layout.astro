@@ -44,7 +44,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			updatedDate={updatedDate}
 			author={author}
 		/>
+		<!-- Favicon and icons -->
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/icon-192.png">
+		<link rel="manifest" href="/site.webmanifest">
+		
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
