@@ -96,6 +96,16 @@ const isDev = import.meta.env.DEV;
 		
 		<SpeedInsights />
 		<Analytics />
+		<script is:inline type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-QMHKJW73FB"></script>
+		<script is:inline type="text/partytown">
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+			  dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+		  
+			gtag("config", "G-QMHKJW73FB");
+		  </script>
 	</head>
 	<body class="min-h-screen flex flex-col bg-[#121212] text-[#e0e0e0]">
 		<div class="terminal-window">
