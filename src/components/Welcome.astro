@@ -1,6 +1,6 @@
 ---
 import { useTranslations, getLocalizedUrl, getExperienceYearsString } from '@utils/i18n';
-import { skills } from '@data/skills';  // Import the skills data properly
+import skillsData from '@data/skills.json';  // Import the skills data from JSON file
 import projectsData from '@data/projects.json';
 import type { Project } from 'src/types/project';
 
@@ -72,10 +72,10 @@ const featuredProjects: Project[] = projectsData
 			</div>
 			
 			<div id="skill-slider" class="relative">
-				{Array(Math.ceil(skills.length / 4)).fill(0).map((_, slideIndex) => (
+				{Array(Math.ceil(skillsData.length / 4)).fill(0).map((_, slideIndex) => (
 					<div class={`skill-slide ${slideIndex === 0 ? 'active' : ''}`} data-index={slideIndex}>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-							{skills.slice(slideIndex * 4, slideIndex * 4 + 4).map((skill, idx) => (
+							{skillsData.slice(slideIndex * 4, slideIndex * 4 + 4).map((skill, idx) => (
 								<div class="carousel-skill-card" style={`--index: ${idx}`}>
 									<div class="skill-logo mx-auto mb-4">
 										<img 
@@ -99,7 +99,7 @@ const featuredProjects: Project[] = projectsData
 			</div>
 			
 			<div class="carousel-indicators mt-6">
-				{Array(Math.ceil(skills.length / 4)).fill(0).map((_, i) => (
+				{Array(Math.ceil(skillsData.length / 4)).fill(0).map((_, i) => (
 					<button 
 						class={`carousel-indicator ${i === 0 ? 'active' : ''}`} 
 						data-index={i}

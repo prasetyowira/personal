@@ -1,13 +1,15 @@
 ---
 import Welcome from '@components/Welcome.astro';
 import Layout from '@layouts/Layout.astro';
+import { getExperienceYearsString } from '@utils/i18n';
 
 const locale = 'en';
+const yearsExp = getExperienceYearsString();
 ---
 
 <Layout 
   title="Wira | Backend Engineer & Software Architect"
-  description="Portfolio and blog of Wira, a senior backend engineer with 10+ years of experience in Golang, Python, and distributed systems."
+  description={`Portfolio and blog of Wira, a senior backend engineer with ${yearsExp} years of experience in Golang, Python, and distributed systems.`}
   locale={locale}
 >
   <Welcome locale={locale} />

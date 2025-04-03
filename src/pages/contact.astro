@@ -1,14 +1,15 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { useTranslations } from '@utils/i18n';
+import { useTranslations, getExperienceYearsString } from '@utils/i18n';
 
 const locale = 'en';
 const t = useTranslations(locale);
+const yearsExp = getExperienceYearsString();
 ---
 
 <Layout 
   title="Contact | Wira - Backend Engineer & Software Architect"
-  description="Get in touch with Wira, a senior backend engineer with 10+ years of experience in Golang, Python, and distributed systems."
+  description={`Get in touch with Wira, a senior backend engineer with ${yearsExp} years of experience in Golang, Python, and distributed systems.`}
   locale={locale}
 >
   <div class="terminal-contact">

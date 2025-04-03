@@ -89,13 +89,33 @@ const navItems = [
 </div>
 
 <script>
-  // Toggle mobile menu
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
+  // Initialize mobile menu functionality
+  function initMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    // Remove any existing event listeners (important for page transitions)
+    if (mobileMenuButton) {
+      const newButton = mobileMenuButton.cloneNode(true);
+      if (mobileMenuButton.parentNode) {
+        mobileMenuButton.parentNode.replaceChild(newButton, mobileMenuButton);
+      }
+      
+      // Add event listener to the new button
+      newButton.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+    }
+  }
   
-  mobileMenuButton?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-  });
+  // Initialize on first load
+  initMobileMenu();
+  
+  // Re-initialize on view transitions (for Astro's View Transitions)
+  document.addEventListener('astro:page-load', initMobileMenu);
+  
+  // Fallback for browsers without view transitions or after regular navigation
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
 </script>
 
 <style>
