@@ -11,8 +11,8 @@
     }
   },
   "env": {
-    "PUBLIC_TURNSTILE_SITE_KEY": "@public_turnstile_site_key",
-    "TURNSTILE_SECRET_KEY": "@turnstile_secret_key"
+    "PUBLIC_TURNSTILE_SITE_KEY": "@PUBLIC_TURNSTILE_SITE_KEY",
+    "TURNSTILE_SECRET_KEY": "@TURNSTILE_SECRET_KEY"
   },
   "buildCommand": "npm run build"
 } 
