@@ -7,7 +7,7 @@ const t = useTranslations(locale);
 const yearsExp = getExperienceYearsString();
 
 // Get Cloudflare Turnstile site key from environment variable
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 console.log('turnstileSiteKey', turnstileSiteKey);
 ---
 
@@ -18,6 +18,9 @@ console.log('turnstileSiteKey', turnstileSiteKey);
 >
   <!-- Cloudflare Turnstile Script -->
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  
+  <!-- Pass the site key as a data attribute to avoid object conversion issues -->
+  <div id="turnstileData" data-sitekey={turnstileSiteKey} class="hidden"></div>
   
   <div class="terminal-contact">
     <div class="terminal-header mb-8">
@@ -160,7 +163,7 @@ console.log('turnstileSiteKey', turnstileSiteKey);
   </div>
 </Layout>
 
-<script define:vars={{ turnstileSiteKey: String(turnstileSiteKey) }}>
+<script>
   // Form submission handling with Formspree and Turnstile
   const form = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
@@ -170,6 +173,10 @@ console.log('turnstileSiteKey', turnstileSiteKey);
   const loadingSpinner = document.getElementById('loading-spinner');
   let turnstileWidgetId = null;
   
+  // Get the site key from the data attribute
+  const turnstileDataElement = document.getElementById('turnstileData');
+  const turnstileSiteKey = turnstileDataElement ? turnstileDataElement.getAttribute('data-sitekey') : '';
+  
   // Initialize Turnstile with callback to store widget ID
   window.onload = function() {
     if (window.turnstile) {
@@ -177,20 +184,25 @@ console.log('turnstileSiteKey', turnstileSiteKey);
       setTimeout(() => {
         // Check if we have a valid site key as a string
         if (typeof turnstileSiteKey === 'string' && turnstileSiteKey.length > 0) {
-          console.log('Initializing Turnstile with site key');
-          turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
-            sitekey: turnstileSiteKey,
-            theme: 'dark',
-            callback: function(token) {
-              // Optional: enable submit button when challenge is completed
-              const submitButton = form?.querySelector('button[type="submit"]');
-              if (submitButton) submitButton.disabled = false;
-            }
-          });
+          console.log('Initializing Turnstile with site key length:', turnstileSiteKey.length);
+          try {
+            turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
+              sitekey: turnstileSiteKey,
+              theme: 'dark',
+              callback: function(token) {
+                // Optional: enable submit button when challenge is completed
+                const submitButton = form?.querySelector('button[type="submit"]');
+                if (submitButton) submitButton.disabled = false;
+              }
+            });
+            console.log('Turnstile initialized with widget ID:', turnstileWidgetId);
+          } catch (error) {
+            console.error('Error rendering Turnstile:', error);
+          }
         } else {
-          console.error('Invalid Turnstile site key:', turnstileSiteKey);
+          console.error('Invalid Turnstile site key (length):', turnstileSiteKey?.length);
         }
-      }, 500);
+      }, 1000);
     } else {
       console.warn('Turnstile not loaded');
     }
@@ -213,9 +225,9 @@ console.log('turnstileSiteKey', turnstileSiteKey);
       
       // Show loading state
       const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      submitText.textContent = 'Sending';
-      loadingSpinner.classList.remove('hidden');
+      if (submitButton) submitButton.disabled = true;
+      if (submitText) submitText.textContent = 'Sending';
+      if (loadingSpinner) loadingSpinner.classList.remove('hidden');
       
       try {
         // Get form data
@@ -237,7 +249,7 @@ console.log('turnstileSiteKey', turnstileSiteKey);
           // Try our API first but with error handling
           let verificationSuccessful = false;
           try {
-            const verifyUrl = window.location.origin + '/api/verify-turnstile';
+            const verifyUrl = window.location.origin + '/api/verify';
             console.log('Verifying Turnstile token at:', verifyUrl);
             
             const verifyResponse = await fetch(verifyUrl, {
@@ -277,9 +289,9 @@ console.log('turnstileSiteKey', turnstileSiteKey);
           
           if (response.ok) {
             // Show success message
-            formStatus.classList.remove('hidden');
-            successMessage.classList.remove('hidden');
-            errorMessage.classList.add('hidden');
+            if (formStatus) formStatus.classList.remove('hidden');
+            if (successMessage) successMessage.classList.remove('hidden');
+            if (errorMessage) errorMessage.classList.add('hidden');
             
             // Reset form
             form.reset();
@@ -289,8 +301,8 @@ console.log('turnstileSiteKey', turnstileSiteKey);
             
             // Hide success message after 5 seconds
             setTimeout(() => {
-              formStatus.classList.add('hidden');
-              successMessage.classList.add('hidden');
+              if (formStatus) formStatus.classList.add('hidden');
+              if (successMessage) successMessage.classList.add('hidden');
             }, 5000);
           } else {
             // Response not OK, show error
@@ -298,14 +310,14 @@ console.log('turnstileSiteKey', turnstileSiteKey);
           }
         } catch (err) {
           // Show error message
-          formStatus.classList.remove('hidden');
-          errorMessage.classList.remove('hidden');
-          successMessage.classList.add('hidden');
+          if (formStatus) formStatus.classList.remove('hidden');
+          if (errorMessage) errorMessage.classList.remove('hidden');
+          if (successMessage) successMessage.classList.add('hidden');
           
           // Set error message text if available
-          if (err instanceof Error && err.message) {
+          if (errorMessage && err instanceof Error && err.message) {
             errorMessage.textContent = err.message;
-          } else {
+          } else if (errorMessage) {
             errorMessage.textContent = 'Error sending message. Please try again.';
           }
           
@@ -314,29 +326,29 @@ console.log('turnstileSiteKey', turnstileSiteKey);
           
           // Hide error message after 5 seconds
           setTimeout(() => {
-            formStatus.classList.add('hidden');
-            errorMessage.classList.add('hidden');
+            if (formStatus) formStatus.classList.add('hidden');
+            if (errorMessage) errorMessage.classList.add('hidden');
             // Reset error message to default
-            errorMessage.textContent = 'Error sending message. Please try again.';
+            if (errorMessage) errorMessage.textContent = 'Error sending message. Please try again.';
           }, 5000);
           
           console.error('Error sending form:', err);
         } finally {
           // Restore button state
-          submitButton.disabled = false;
-          submitText.textContent = 'Submit';
-          loadingSpinner.classList.add('hidden');
+          if (submitButton) submitButton.disabled = false;
+          if (submitText) submitText.textContent = 'Submit';
+          if (loadingSpinner) loadingSpinner.classList.add('hidden');
         }
       } catch (err) {
         // Show error message
-        formStatus.classList.remove('hidden');
-        errorMessage.classList.remove('hidden');
-        successMessage.classList.add('hidden');
+        if (formStatus) formStatus.classList.remove('hidden');
+        if (errorMessage) errorMessage.classList.remove('hidden');
+        if (successMessage) successMessage.classList.add('hidden');
         
         // Set error message text if available
-        if (err instanceof Error && err.message) {
+        if (errorMessage && err instanceof Error && err.message) {
           errorMessage.textContent = err.message;
-        } else {
+        } else if (errorMessage) {
           errorMessage.textContent = 'Error sending message. Please try again.';
         }
         
@@ -345,10 +357,10 @@ console.log('turnstileSiteKey', turnstileSiteKey);
         
         // Hide error message after 5 seconds
         setTimeout(() => {
-          formStatus.classList.add('hidden');
-          errorMessage.classList.add('hidden');
+          if (formStatus) formStatus.classList.add('hidden');
+          if (errorMessage) errorMessage.classList.add('hidden');
           // Reset error message to default
-          errorMessage.textContent = 'Error sending message. Please try again.';
+          if (errorMessage) errorMessage.textContent = 'Error sending message. Please try again.';
         }, 5000);
         
         console.error('Error sending form:', err);

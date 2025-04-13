@@ -18,6 +18,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
   <!-- Cloudflare Turnstile Script -->
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   
+  <!-- Pass the site key as a data attribute to avoid object conversion issues -->
+  <div id="turnstileData" data-sitekey={turnstileSiteKey} class="hidden"></div>
+  
   <div class="terminal-contact">
     <div class="terminal-header mb-8">
       <h1 class="text-3xl md:text-4xl mb-4">$ お問い合わせ</h1>
@@ -159,7 +162,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
   </div>
 </Layout>
 
-<script define:vars={{ turnstileSiteKey: String(turnstileSiteKey) }}>
+<script>
   // Form submission handling with Formspree and Turnstile
   const form = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
@@ -169,6 +172,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
   const loadingSpinner = document.getElementById('loading-spinner');
   let turnstileWidgetId = null;
   
+  // Get the site key from the data attribute
+  const turnstileDataElement = document.getElementById('turnstileData');
+  const turnstileSiteKey = turnstileDataElement ? turnstileDataElement.getAttribute('data-sitekey') : '';
+  
   // Initialize Turnstile with callback to store widget ID
   window.onload = function() {
     if (window.turnstile) {
@@ -176,21 +183,26 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       setTimeout(() => {
         // Check if we have a valid site key as a string
         if (typeof turnstileSiteKey === 'string' && turnstileSiteKey.length > 0) {
-          console.log('Initializing Turnstile with site key');
-          turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
-            sitekey: turnstileSiteKey,
-            theme: 'dark',
-            language: 'ja',
-            callback: function(token) {
-              // Optional: enable submit button when challenge is completed
-              const submitButton = form?.querySelector('button[type="submit"]');
-              if (submitButton) submitButton.disabled = false;
-            }
-          });
+          console.log('Initializing Turnstile with site key length:', turnstileSiteKey.length);
+          try {
+            turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
+              sitekey: turnstileSiteKey,
+              theme: 'dark',
+              language: 'ja',
+              callback: function(token) {
+                // Optional: enable submit button when challenge is completed
+                const submitButton = form?.querySelector('button[type="submit"]');
+                if (submitButton) submitButton.disabled = false;
+              }
+            });
+            console.log('Turnstile initialized with widget ID:', turnstileWidgetId);
+          } catch (error) {
+            console.error('Error rendering Turnstile:', error);
+          }
         } else {
-          console.error('Invalid Turnstile site key:', turnstileSiteKey);
+          console.error('Invalid Turnstile site key (length):', turnstileSiteKey?.length);
         }
-      }, 500);
+      }, 1000);
     } else {
       console.warn('Turnstile not loaded');
     }
@@ -213,9 +225,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       
       // Show loading state
       const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      submitText.textContent = '送信中';
-      loadingSpinner.classList.remove('hidden');
+      if (submitButton) submitButton.disabled = true;
+      if (submitText) submitText.textContent = '送信中';
+      if (loadingSpinner) loadingSpinner.classList.remove('hidden');
       
       try {
         // Get form data
@@ -280,9 +292,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           
           if (response.ok) {
             // Show success message
-            formStatus.classList.remove('hidden');
-            successMessage.classList.remove('hidden');
-            errorMessage.classList.add('hidden');
+            if (formStatus) formStatus.classList.remove('hidden');
+            if (successMessage) successMessage.classList.remove('hidden');
+            if (errorMessage) errorMessage.classList.add('hidden');
             
             // Reset form
             form.reset();
@@ -292,8 +304,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
             
             // Hide success message after 5 seconds
             setTimeout(() => {
-              formStatus.classList.add('hidden');
-              successMessage.classList.add('hidden');
+              if (formStatus) formStatus.classList.add('hidden');
+              if (successMessage) successMessage.classList.add('hidden');
             }, 5000);
           } else {
             // Response not OK, show error
@@ -301,14 +313,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           }
         } catch (err) {
           // Show error message
-          formStatus.classList.remove('hidden');
-          errorMessage.classList.remove('hidden');
-          successMessage.classList.add('hidden');
+          if (formStatus) formStatus.classList.remove('hidden');
+          if (errorMessage) errorMessage.classList.remove('hidden');
+          if (successMessage) successMessage.classList.add('hidden');
           
           // Set error message text if available
-          if (err instanceof Error && err.message) {
+          if (errorMessage && err instanceof Error && err.message) {
             errorMessage.textContent = err.message;
-          } else {
+          } else if (errorMessage) {
             errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
           }
           
@@ -317,29 +329,29 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           
           // Hide error message after 5 seconds
           setTimeout(() => {
-            formStatus.classList.add('hidden');
-            errorMessage.classList.add('hidden');
+            if (formStatus) formStatus.classList.add('hidden');
+            if (errorMessage) errorMessage.classList.add('hidden');
             // Reset error message to default
-            errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
+            if (errorMessage) errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
           }, 5000);
           
           console.error('Error sending form:', err);
         } finally {
           // Restore button state
-          submitButton.disabled = false;
-          submitText.textContent = '送信';
-          loadingSpinner.classList.add('hidden');
+          if (submitButton) submitButton.disabled = false;
+          if (submitText) submitText.textContent = '送信';
+          if (loadingSpinner) loadingSpinner.classList.add('hidden');
         }
       } catch (err) {
         // Show error message
-        formStatus.classList.remove('hidden');
-        errorMessage.classList.remove('hidden');
-        successMessage.classList.add('hidden');
+        if (formStatus) formStatus.classList.remove('hidden');
+        if (errorMessage) errorMessage.classList.remove('hidden');
+        if (successMessage) successMessage.classList.add('hidden');
         
         // Set error message text if available
-        if (err instanceof Error && err.message) {
+        if (errorMessage && err instanceof Error && err.message) {
           errorMessage.textContent = err.message;
-        } else {
+        } else if (errorMessage) {
           errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
         }
         
@@ -348,10 +360,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         
         // Hide error message after 5 seconds
         setTimeout(() => {
-          formStatus.classList.add('hidden');
-          errorMessage.classList.add('hidden');
+          if (formStatus) formStatus.classList.add('hidden');
+          if (errorMessage) errorMessage.classList.add('hidden');
           // Reset error message to default
-          errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
+          if (errorMessage) errorMessage.textContent = 'メッセージの送信中にエラーが発生しました。もう一度お試しください。';
         }, 5000);
         
         console.error('Error sending form:', err);
