@@ -5,6 +5,9 @@ import { useTranslations, getExperienceYearsString } from '@utils/i18n';
 const locale = 'en';
 const t = useTranslations(locale);
 const yearsExp = getExperienceYearsString();
+
+// Get Cloudflare Turnstile site key from environment variable
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <Layout 
@@ -12,6 +15,9 @@ const yearsExp = getExperienceYearsString();
   description={`Get in touch with Wira, a senior backend engineer with ${yearsExp} years of experience in Golang, Python, and distributed systems.`}
   locale={locale}
 >
+  <!-- Cloudflare Turnstile Script -->
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  
   <div class="terminal-contact">
     <div class="terminal-header mb-8">
       <h1 class="text-3xl md:text-4xl mb-4">$ Contact Me</h1>
@@ -69,6 +75,11 @@ const yearsExp = getExperienceYearsString();
               required
               class="w-full bg-black/30 border border-[--border-color] text-[--text-primary] p-2 rounded focus:border-[--accent-green] focus:outline-none resize-none"
             ></textarea>
+          </div>
+          
+          <!-- Cloudflare Turnstile Widget -->
+          <div class="mb-4 cf-turnstile-container">
+            <div class="cf-turnstile"></div>
           </div>
           
           <!-- Hidden form fields -->
@@ -148,21 +159,50 @@ const yearsExp = getExperienceYearsString();
   </div>
 </Layout>
 
-<script>
-  // Form submission handling with Formspree
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const formStatus = document.getElementById('form-status') as HTMLDivElement;
-  const successMessage = document.getElementById('success-message') as HTMLSpanElement;
-  const errorMessage = document.getElementById('error-message') as HTMLSpanElement;
-  const submitText = document.getElementById('submit-text') as HTMLSpanElement;
-  const loadingSpinner = document.getElementById('loading-spinner') as HTMLSpanElement;
+<script define:vars={{ turnstileSiteKey: turnstileSiteKey }}>
+  // Form submission handling with Formspree and Turnstile
+  const form = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  const successMessage = document.getElementById('success-message');
+  const errorMessage = document.getElementById('error-message');
+  const submitText = document.getElementById('submit-text');
+  const loadingSpinner = document.getElementById('loading-spinner');
+  let turnstileWidgetId = null;
+  
+  // Initialize Turnstile with callback to store widget ID
+  window.onload = function() {
+    if (window.turnstile) {
+      // Wait for Turnstile to be fully loaded
+      setTimeout(() => {
+        turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
+          sitekey: turnstileSiteKey,
+          callback: function(token) {
+            // Optional: enable submit button when challenge is completed
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = false;
+          }
+        });
+      }, 500);
+    }
+  };
+  
+  // Safe function to reset Turnstile
+  function safeResetTurnstile() {
+    try {
+      if (window.turnstile && turnstileWidgetId) {
+        window.turnstile.reset(turnstileWidgetId);
+      }
+    } catch (e) {
+      console.warn('Failed to reset Turnstile:', e);
+    }
+  }
   
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       // Show loading state
-      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const submitButton = form.querySelector('button[type="submit"]');
       submitButton.disabled = true;
       submitText.textContent = 'Sending';
       loadingSpinner.classList.remove('hidden');
@@ -171,7 +211,29 @@ const yearsExp = getExperienceYearsString();
         // Get form data
         const formData = new FormData(form);
         
-        // Submit to Formspree
+        // Get the Turnstile token
+        const token = window.turnstile?.getResponse(turnstileWidgetId);
+        
+        if (!token) {
+          throw new Error('Please complete the Turnstile challenge');
+        }
+        
+        // Add the token to the form data
+        formData.append('cf-turnstile-response', token);
+        
+        // First verify the Turnstile token with our API
+        const verifyResponse = await fetch('/api/verify-turnstile', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const verifyResult = await verifyResponse.json();
+        
+        if (!verifyResult.success) {
+          throw new Error(verifyResult.error || 'Turnstile verification failed');
+        }
+        
+        // If verification succeeded, submit to Formspree
         const response = await fetch(form.action, {
           method: 'POST',
           body: formData,
@@ -189,6 +251,9 @@ const yearsExp = getExperienceYearsString();
           // Reset form
           form.reset();
           
+          // Reset Turnstile
+          safeResetTurnstile();
+          
           // Hide success message after 5 seconds
           setTimeout(() => {
             formStatus.classList.add('hidden');
@@ -204,10 +269,22 @@ const yearsExp = getExperienceYearsString();
         errorMessage.classList.remove('hidden');
         successMessage.classList.add('hidden');
         
+        // Set error message text if available
+        if (err instanceof Error && err.message) {
+          errorMessage.textContent = err.message;
+        } else {
+          errorMessage.textContent = 'Error sending message. Please try again.';
+        }
+        
+        // Reset Turnstile
+        safeResetTurnstile();
+        
         // Hide error message after 5 seconds
         setTimeout(() => {
           formStatus.classList.add('hidden');
           errorMessage.classList.add('hidden');
+          // Reset error message to default
+          errorMessage.textContent = 'Error sending message. Please try again.';
         }, 5000);
         
         console.error('Error sending form:', err);
@@ -249,5 +326,10 @@ const yearsExp = getExperienceYearsString();
   input:focus, textarea:focus {
     border-right: 2px solid var(--accent-green);
     animation: typingCursor 1s step-end infinite;
+  }
+  
+  .cf-turnstile-container {
+    display: flex;
+    justify-content: center;
   }
 </style> 

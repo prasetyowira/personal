@@ -12,6 +12,7 @@ A modern, responsive personal portfolio website built with Astro and TailwindCSS
 - **Performance Optimized**: Fast page loads with minimal JavaScript
 - **Project Showcase**: Detailed project pages with descriptions, key features, and technical challenges
 - **SEO Friendly**: Meta tags and structured content for better search engine visibility
+- **Spam Protection**: Contact form protected with Cloudflare Turnstile
 
 ## 🚀 Tech Stack
 
@@ -20,6 +21,8 @@ A modern, responsive personal portfolio website built with Astro and TailwindCSS
 - [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
 - [Vue.js](https://vuejs.org/) - For interactive components (used minimally)
 - [Vercel](https://vercel.com/) - Deployment and hosting
+- [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) - Bot protection for forms
+- [Formspree](https://formspree.io/) - Form backend service
 
 ## 📁 Project Structure
 
@@ -79,6 +82,23 @@ The site supports English and Japanese languages:
 ## 🚀 Deployment
 
 This site is deployed on Vercel with continuous deployment from the main branch. Configuration settings can be found in `vercel.json`.
+
+## ⚙️ Environment Variables
+
+The following environment variables are required for the site to function properly:
+
+```
+# Cloudflare Turnstile Configuration
+PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key
+TURNSTILE_SECRET_KEY=your_turnstile_secret_key
+```
+
+You can copy the `.env.example` file to a new `.env` file and fill in the values. For production deployment, set these variables in your Vercel project settings.
+
+To get Cloudflare Turnstile keys:
+1. Go to the [Cloudflare Turnstile dashboard](https://dash.cloudflare.com/?to=/:account/turnstile)
+2. Create a new site
+3. Copy the site key and secret key to your environment variables
 
 ```sh
 npm create astro@latest -- --template basics
