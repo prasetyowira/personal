@@ -229,6 +229,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         
         // Add the token to the form data
         formData.append('cf-turnstile-response', token);
+
+        console.log('turnstile check');
         
         // Prepare verification with Formspree and include Turnstile token
         // Adding a client-side verification fallback since the API route may not work on Vercel
