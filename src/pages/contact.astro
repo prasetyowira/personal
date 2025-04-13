@@ -8,6 +8,7 @@ const yearsExp = getExperienceYearsString();
 
 // Get Cloudflare Turnstile site key from environment variable
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+console.log('turnstileSiteKey', turnstileSiteKey);
 ---
 
 <Layout 
