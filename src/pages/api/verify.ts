@@ -3,9 +3,9 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import type { APIContext } from "astro";
 
-const turnstileURL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-
 export const POST: APIRoute = async ({ request }: APIContext) => {
+    const turnstileURL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
     const data = await request.formData();
 
     const turnstile_token = data.get("cf-turnstile-response");
