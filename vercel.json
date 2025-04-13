@@ -1,4 +1,18 @@
 {
   "framework": "astro",
-  "regions": ["sin1"]
+  "regions": ["sin1"],
+  "rewrites": [
+    { "source": "/api/verify-turnstile", "destination": "/api/verify-turnstile.js" }
+  ],
+  "functions": {
+    "api/verify-turnstile.js": {
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "PUBLIC_TURNSTILE_SITE_KEY": "@public_turnstile_site_key",
+    "TURNSTILE_SECRET_KEY": "@turnstile_secret_key"
+  },
+  "buildCommand": "npm run build"
 } 
