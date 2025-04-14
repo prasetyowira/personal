@@ -96,8 +96,8 @@ const isDev = import.meta.env.DEV;
 		
 		<SpeedInsights />
 		<Analytics />
-		<script is:inline type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-QMHKJW73FB"></script>
-		<script is:inline type="text/partytown">
+		<script is:inline type={isDev ? undefined : "text/partytown"} src="https://www.googletagmanager.com/gtag/js?id=G-QMHKJW73FB"></script>
+		<script is:inline type={isDev ? undefined : "text/partytown"}>
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
 			  dataLayer.push(arguments);
@@ -105,9 +105,22 @@ const isDev = import.meta.env.DEV;
 			gtag("js", new Date());
 		  
 			gtag("config", "G-QMHKJW73FB");
-		  </script>
+		</script>
+		<script is:inline type={isDev ? undefined : "text/partytown"} src="https://www.googletagmanager.com/gtm.js?id=GTM-NL35TNZS"></script>
+		<script is:inline type={isDev ? undefined : "text/partytown"}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+			  dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+			gtag("config", "GTM-NL35TNZS");
+		</script>
 	</head>
 	<body class="min-h-screen flex flex-col bg-[#121212] text-[#e0e0e0]">
+		<noscript>
+			<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL35TNZS"
+				height="0" width="0" style="display:none;visibility:hidden"></iframe>
+		</noscript>
 		<div class="terminal-window">
 			<div class="terminal-header-bar">
 				<div class="terminal-buttons">
