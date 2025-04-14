@@ -17,7 +17,7 @@ console.log('turnstileSiteKey', turnstileSiteKey);
   locale={locale}
 >
   <!-- Cloudflare Turnstile Script -->
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   
   <!-- Pass the site key as a data attribute to avoid object conversion issues -->
   <div id="turnstileData" data-sitekey={turnstileSiteKey} class="hidden"></div>
@@ -92,7 +92,8 @@ console.log('turnstileSiteKey', turnstileSiteKey);
           <div class="flex items-center">
             <button 
               type="submit"
-              class="inline-flex items-center justify-center px-4 py-2 bg-[#00FF85] text-black border border-[#00FF85] font-mono text-sm rounded transition-all duration-200 hover:bg-opacity-80"
+              disabled
+              class="inline-flex items-center justify-center px-4 py-2 bg-[#00FF85] text-black border border-[#00FF85] font-mono text-sm rounded transition-all duration-200 hover:bg-opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span id="submit-text">Submit</span>
               <span id="loading-spinner" class="hidden ml-2">
@@ -164,209 +165,238 @@ console.log('turnstileSiteKey', turnstileSiteKey);
 </Layout>
 
 <script>
-  // Form submission handling with Formspree and Turnstile
-  const form = document.getElementById('contact-form');
-  const formStatus = document.getElementById('form-status');
-  const successMessage = document.getElementById('success-message');
-  const errorMessage = document.getElementById('error-message');
-  const submitText = document.getElementById('submit-text');
-  const loadingSpinner = document.getElementById('loading-spinner');
-  let turnstileWidgetId = null;
-  
-  // Get the site key from the data attribute
-  const turnstileDataElement = document.getElementById('turnstileData');
-  const turnstileSiteKey = turnstileDataElement ? turnstileDataElement.getAttribute('data-sitekey') : '';
-  
-  // Initialize Turnstile with callback to store widget ID
-  window.onload = function() {
-    if (window.turnstile) {
-      // Wait for Turnstile to be fully loaded
-      setTimeout(() => {
-        // Check if we have a valid site key as a string
-        if (typeof turnstileSiteKey === 'string' && turnstileSiteKey.length > 0) {
-          console.log('Initializing Turnstile with site key length:', turnstileSiteKey.length);
-          try {
-            turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
-              sitekey: turnstileSiteKey,
-              theme: 'dark',
-              callback: function(token) {
-                // Optional: enable submit button when challenge is completed
-                const submitButton = form?.querySelector('button[type="submit"]');
-                if (submitButton) submitButton.disabled = false;
-              }
-            });
-            console.log('Turnstile initialized with widget ID:', turnstileWidgetId);
-          } catch (error) {
-            console.error('Error rendering Turnstile:', error);
-          }
-        } else {
-          console.error('Invalid Turnstile site key (length):', turnstileSiteKey?.length);
-        }
-      }, 1000);
-    } else {
-      console.warn('Turnstile not loaded');
-    }
-  };
-  
-  // Safe function to reset Turnstile
-  function safeResetTurnstile() {
-    try {
-      if (window.turnstile && turnstileWidgetId) {
-        window.turnstile.reset(turnstileWidgetId);
-      }
-    } catch (e) {
-      console.warn('Failed to reset Turnstile:', e);
+  console.log('Contact form script block started.'); // Debug log: Script start
+
+  // --- Global Variables ---
+  let turnstileInitialized = false;
+  let turnstileWidgetId: string | null = null; // Store the widget ID
+
+  // Add type declaration for the global callback
+  declare global {
+    interface Window {
+      onloadTurnstileCallback: () => void;
     }
   }
-  
-  if (form) {
+
+  // --- Turnstile Initialization Function ---
+  function initializeTurnstile() {
+    console.log('Attempting to initialize Turnstile (called by onloadTurnstileCallback or manual trigger)...'); // Debug log
+    if (turnstileInitialized) {
+      console.log('Turnstile already initialized.'); // Debug log
+      return; // Don't initialize twice
+    }
+
+    const turnstileContainer = document.querySelector('.cf-turnstile');
+    const turnstileDataElement = document.getElementById('turnstileData');
+    const turnstileSiteKey = turnstileDataElement?.getAttribute('data-sitekey') || '';
+    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+    if (!turnstileContainer) {
+      console.error('Turnstile container (.cf-turnstile) not found.');
+      return;
+    }
+    if (!turnstileDataElement) {
+      console.error('Turnstile data element (#turnstileData) not found.');
+      return;
+    }
+    if (!turnstileSiteKey) {
+      console.error('Turnstile site key not found in data attribute.');
+      return;
+    }
+
+    // Check if the Turnstile API is available (should be if called by onloadTurnstileCallback)
+    if (window.turnstile) {
+      console.log('window.turnstile found. Rendering widget.'); // Debug log
+      try {
+        turnstileWidgetId = window.turnstile.render('.cf-turnstile', {
+          sitekey: turnstileSiteKey,
+          theme: 'dark',
+          callback: function(token: string) {
+            console.log('Turnstile callback executed. Token received.'); // Debug log
+            if (submitButton) {
+              console.log('Enabling submit button via Turnstile callback.'); // Debug log
+              submitButton.disabled = false;
+            } else {
+              console.error('Turnstile callback: Submit button not found!');
+            }
+          },
+          'error-callback': function() {
+            console.error('Turnstile error callback executed.');
+            if (submitButton) submitButton.disabled = true; // Keep disabled on error
+          },
+          'expired-callback': function() {
+            console.warn('Turnstile expired callback executed.');
+            if (submitButton) submitButton.disabled = true; // Disable again if expired
+            window.turnstile?.reset(turnstileWidgetId ?? undefined);
+          },
+          'timeout-callback': function() {
+            console.error('Turnstile timeout callback executed.');
+             if (submitButton) submitButton.disabled = true; // Keep disabled on timeout
+          }
+        });
+        turnstileInitialized = true;
+        console.log('Turnstile render called successfully. Widget ID:', turnstileWidgetId); // Debug log
+      } catch (error) {
+        console.error('Error calling window.turnstile.render:', error);
+      }
+    } else {
+      // This case should ideally not happen if called via onloadTurnstileCallback
+      console.error('window.turnstile not found during initialization attempt!'); // Changed to error
+    }
+  }
+
+  // --- Make initializeTurnstile globally accessible for Turnstile API ---
+  window.onloadTurnstileCallback = initializeTurnstile;
+  console.log('window.onloadTurnstileCallback assigned.'); // Debug log
+
+  // --- Form Handling Setup ---
+  function setupFormListener() {
+    console.log('Setting up form submit listener...'); // Debug log
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const formStatus = document.getElementById('form-status');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+    const submitText = document.getElementById('submit-text');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+    if (!form) {
+      console.error('Contact form not found in setupFormListener.');
+      return;
+    }
+    if (!submitButton) {
+       console.error('Submit button not found in setupFormListener.');
+       return;
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
-      // Show loading state
-      const submitButton = form.querySelector('button[type="submit"]');
-      if (submitButton) submitButton.disabled = true;
+      console.log('Form submission started.'); // Debug log
+
+      submitButton.disabled = true;
       if (submitText) submitText.textContent = 'Sending';
       if (loadingSpinner) loadingSpinner.classList.remove('hidden');
-      
+
       try {
-        // Get form data
         const formData = new FormData(form);
-        
-        // Get the Turnstile token
-        const token = window.turnstile?.getResponse(turnstileWidgetId);
-        
+        const token = window.turnstile?.getResponse(turnstileWidgetId ?? undefined);
+        console.log('Turnstile token retrieved:', token ? 'Exists' : 'Missing'); // Debug log
+
         if (!token) {
           throw new Error('Please complete the Turnstile challenge');
         }
-        
-        // Add the token to the form data
+
         formData.append('cf-turnstile-response', token);
-        
-        // Prepare verification with Formspree and include Turnstile token
-        // Adding a client-side verification fallback since the API route may not work on Vercel
+
+        // Try server-side verification first
         try {
-          // Try our API first but with error handling
-          let verificationSuccessful = false;
-          try {
-            const verifyUrl = window.location.origin + '/api/verify';
-            console.log('Verifying Turnstile token at:', verifyUrl);
-            
-            const verifyResponse = await fetch(verifyUrl, {
-              method: 'POST',
-              body: formData
-            });
-            
-            // Check if the response is JSON
-            const contentType = verifyResponse.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-              const verifyResult = await verifyResponse.json();
-              verificationSuccessful = verifyResult.success;
-              
-              if (!verificationSuccessful) {
-                console.warn('API verification failed:', verifyResult.error || 'Unknown error');
-              }
-            } else {
-              console.warn('API endpoint returned non-JSON response');
-            }
-          } catch (verifyError) {
-            console.warn('Error using API endpoint for verification, falling back to Formspree:', verifyError);
-          }
-          
-          // If our API fails, proceed anyway and let Formspree handle the verification
-          if (!verificationSuccessful) {
-            console.log('Proceeding with Formspree submission (they also verify Turnstile tokens)');
-          }
-          
-          // Submit to Formspree (which also validates Turnstile tokens)
-          const response = await fetch(form.action, {
+          const verifyUrl = window.location.origin + '/api/verify';
+          console.log('Attempting server-side verification...'); // Debug log
+          const verifyResponse = await fetch(verifyUrl, {
             method: 'POST',
-            body: formData,
-            headers: {
-              'Accept': 'application/json'
-            }
+            body: formData
           });
-          
-          if (response.ok) {
-            // Show success message
-            if (formStatus) formStatus.classList.remove('hidden');
-            if (successMessage) successMessage.classList.remove('hidden');
-            if (errorMessage) errorMessage.classList.add('hidden');
-            
-            // Reset form
-            form.reset();
-            
-            // Reset Turnstile
-            safeResetTurnstile();
-            
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-              if (formStatus) formStatus.classList.add('hidden');
-              if (successMessage) successMessage.classList.add('hidden');
-            }, 5000);
+          const contentType = verifyResponse.headers.get('content-type');
+          if (verifyResponse.ok && contentType?.includes('application/json')) {
+             const result = await verifyResponse.json();
+             console.log('Server-side verification result:', result);
           } else {
-            // Response not OK, show error
-            throw new Error('Form submission failed');
+            console.warn(`Server-side verification response not OK or not JSON. Status: ${verifyResponse.status}`);
           }
-        } catch (err) {
-          // Show error message
+        } catch (verifyError) {
+          console.warn('Server-side verification fetch failed, proceeding with Formspree:', verifyError);
+        }
+
+        // Submit to Formspree
+        console.log('Submitting to Formspree...'); // Debug log
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          console.log('Formspree submission successful.'); // Debug log
           if (formStatus) formStatus.classList.remove('hidden');
-          if (errorMessage) errorMessage.classList.remove('hidden');
-          if (successMessage) successMessage.classList.add('hidden');
-          
-          // Set error message text if available
-          if (errorMessage && err instanceof Error && err.message) {
-            errorMessage.textContent = err.message;
-          } else if (errorMessage) {
-            errorMessage.textContent = 'Error sending message. Please try again.';
-          }
-          
-          // Reset Turnstile
-          safeResetTurnstile();
-          
-          // Hide error message after 5 seconds
+          if (successMessage) successMessage.classList.remove('hidden');
+          if (errorMessage) errorMessage.classList.add('hidden');
+          form.reset();
+          window.turnstile?.reset(turnstileWidgetId ?? undefined);
+          console.log('Form reset and Turnstile reset called.'); // Debug log
+          submitButton.disabled = true; // Keep disabled after success until Turnstile resets/re-verifies
+
           setTimeout(() => {
             if (formStatus) formStatus.classList.add('hidden');
-            if (errorMessage) errorMessage.classList.add('hidden');
-            // Reset error message to default
-            if (errorMessage) errorMessage.textContent = 'Error sending message. Please try again.';
+            if (successMessage) successMessage.classList.add('hidden');
           }, 5000);
-          
-          console.error('Error sending form:', err);
-        } finally {
-          // Restore button state
-          if (submitButton) submitButton.disabled = false;
-          if (submitText) submitText.textContent = 'Submit';
-          if (loadingSpinner) loadingSpinner.classList.add('hidden');
+        } else {
+           console.error(`Formspree submission failed. Status: ${response.status}`); // Debug log
+          throw new Error('Form submission failed');
         }
       } catch (err) {
-        // Show error message
+        console.error('Error during form submission process:', err);
         if (formStatus) formStatus.classList.remove('hidden');
-        if (errorMessage) errorMessage.classList.remove('hidden');
-        if (successMessage) successMessage.classList.add('hidden');
-        
-        // Set error message text if available
-        if (errorMessage && err instanceof Error && err.message) {
-          errorMessage.textContent = err.message;
-        } else if (errorMessage) {
-          errorMessage.textContent = 'Error sending message. Please try again.';
+        if (errorMessage) {
+          errorMessage.classList.remove('hidden');
+          errorMessage.textContent = err instanceof Error ? err.message : 'Error sending message. Please try again.';
         }
-        
-        // Reset Turnstile
-        safeResetTurnstile();
-        
-        // Hide error message after 5 seconds
+        if (successMessage) successMessage.classList.add('hidden');
+
+        window.turnstile?.reset(turnstileWidgetId ?? undefined);
+        submitButton.disabled = true; // Keep disabled on error until reset/re-verify
+
         setTimeout(() => {
           if (formStatus) formStatus.classList.add('hidden');
-          if (errorMessage) errorMessage.classList.add('hidden');
-          // Reset error message to default
-          if (errorMessage) errorMessage.textContent = 'Error sending message. Please try again.';
+          if (errorMessage) {
+            errorMessage.classList.add('hidden');
+            errorMessage.textContent = 'Error sending message. Please try again.';
+          }
         }, 5000);
-        
-        console.error('Error sending form:', err);
+
+      } finally {
+        console.log('Form submission finally block.'); // Debug log
+        // Note: Button is intentionally kept disabled here after submit.
+        // It gets re-enabled by the Turnstile 'callback' upon successful re-verification.
+        if (submitText) submitText.textContent = 'Submit';
+        if (loadingSpinner) loadingSpinner.classList.add('hidden');
       }
     });
+     console.log('Form submit listener attached.'); // Debug log
   }
+
+  // --- Main Execution Logic: Setup form listener when DOM is ready ---
+  console.log('Setting up main execution logic...'); // Debug log
+
+  function runSetup() {
+    console.log('runSetup called.'); // Debug log
+    setupFormListener();
+
+    // Safeguard: If Turnstile loaded *before* this script ran DOM ready logic,
+    // the onloadTurnstileCallback might have been missed. Initialize manually.
+    if (window.turnstile && !turnstileInitialized) {
+        console.log('Turnstile API found during runSetup, manually initializing...'); // Debug log
+        initializeTurnstile();
+    }
+  }
+
+  // Attach form listener setup to DOMContentLoaded
+  try {
+    console.log('Attempting to add DOMContentLoaded listener for setupFormListener...'); // Debug log
+    document.addEventListener('DOMContentLoaded', runSetup);
+    console.log('DOMContentLoaded listener for setupFormListener added successfully.'); // Debug log
+  } catch (e) {
+    console.error('Error adding DOMContentLoaded listener for setupFormListener:', e);
+  }
+
+  // If DOM is already ready (e.g., script loaded late), run setup now
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log('DOM already interactive or complete, running setupFormListener now.'); // Debug log
+    runSetup();
+  }
+
+  // Turnstile initialization is now handled by window.onloadTurnstileCallback
+
+  console.log('Contact form script block finished setup.'); // Debug log: Script end
 </script>
 
 <style>
