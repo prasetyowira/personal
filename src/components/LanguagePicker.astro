@@ -15,12 +15,14 @@ const currentPath = locale === 'en'
 <div class="flex items-center space-x-4">
   <a 
     href={getLocalizedUrl('en', currentPath)} 
+    data-language="en"
     class={`text-sm font-medium transition-colors ${locale === 'en' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'}`}
   >
     {t('language.en')}
   </a>
   <a 
     href={getLocalizedUrl('ja', currentPath)} 
+    data-language="ja"
     class={`text-sm font-medium transition-colors ${locale === 'ja' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'}`}
   >
     {t('language.ja')}

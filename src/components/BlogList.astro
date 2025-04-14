@@ -17,12 +17,12 @@ const getCleanSlug = (entry: CollectionEntry<'blog'>) => {
 };
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="blog-list">
   {posts.length > 0 ? (
     posts.map(post => {
       const cleanSlug = getCleanSlug(post);
       return (
-        <div class="bg-[--card-bg] rounded-lg overflow-hidden shadow-lg flex flex-col h-full transition-transform hover:translate-y-[-5px]">
+        <div class="bg-[--card-bg] rounded-lg overflow-hidden shadow-lg flex flex-col h-full transition-transform hover:translate-y-[-5px]" id={`blog-item-${cleanSlug}`}>
           {post.data.image && (
             <img 
               src={post.data.image} 
@@ -49,6 +49,7 @@ const getCleanSlug = (entry: CollectionEntry<'blog'>) => {
                   <a 
                     href={getLocalizedUrl(locale, `/blog/tag/${tag?.toLowerCase() || ''}`)}
                     class="text-xs bg-[--tag-bg] rounded-full px-2 py-1 text-[--tag-text] hover:bg-[--tag-bg-hover] transition-colors"
+                    id={`blog-tag-link-${tag?.toLowerCase()}`}
                   >
                     #{tag || ''}
                   </a>
@@ -60,6 +61,7 @@ const getCleanSlug = (entry: CollectionEntry<'blog'>) => {
             <a 
               href={getLocalizedUrl(locale, `/blog/${cleanSlug}`)} 
               class="text-[--accent-blue] hover:underline"
+              id={`blog-read-more-${cleanSlug}`}
             >
               {isJapanese ? '続きを読む →' : 'Read More →'}
             </a>

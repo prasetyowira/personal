@@ -25,14 +25,14 @@ const yearsExp = getExperienceYearsString();
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Main Content -->
-      <div class="lg:col-span-2">
+      <div class="lg:col-span-2" id="about-main-content">
         <div class="terminal-line mb-4">
           <span class="text-[--accent-green]">wira@portfolio</span><span class="text-[--text-secondary]">:</span><span class="text-[--accent-blue]">~/about</span><span class="text-[--text-secondary]">$</span>
           <span class="text-[--text-primary] ml-2">{t('about.terminal.command')}</span>
         </div>
         
         <div class="terminal-content p-4 border rounded bg-black/20 mb-8" style="border-color: var(--border-color);">
-          <div class="mb-6">
+          <div class="mb-6" id="about-journey-section">
             <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.journey.title')}</h2>
             <div class="terminal-text space-y-4">
               <p>
@@ -53,11 +53,11 @@ const yearsExp = getExperienceYearsString();
             </div>
           </div>
           
-          <div class="mb-6">
+          <div class="mb-6" id="about-experience-section">
             <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.experience.title')}</h2>
             <div class="terminal-timeline space-y-6">
               {experienceData.map((job, index) => (
-                <div class="timeline-item">
+                <div class="timeline-item" id={`about-experience-item-${index}`}>
                   <div class="flex items-start">
                     <div class="terminal-bullet mr-3 mt-1.5">
                       <div class={`w-3 h-3 rounded-full ${job.highlight ? 'bg-[--accent-green]' : 'bg-[--accent-blue]'}`}></div>
@@ -80,11 +80,11 @@ const yearsExp = getExperienceYearsString();
             </div>
           </div>
           
-          <div class="mb-6">
+          <div class="mb-6" id="about-education-section">
             <h2 class="text-2xl text-[--accent-green] mb-4">{t('about.education.title')}</h2>
             <div class="terminal-text">
-              {educationData.map(edu => (
-                <div class="flex items-start mb-4">
+              {educationData.map((edu, index) => (
+                <div class="flex items-start mb-4" id={`about-education-item-${index}`}>
                   <div class="terminal-bullet mr-3 mt-1.5">
                     <div class="w-3 h-3 rounded-full bg-[--accent-green]"></div>
                   </div>
@@ -100,10 +100,10 @@ const yearsExp = getExperienceYearsString();
       </div>
       
       <!-- Sidebar -->
-      <div class="lg:col-span-1">
+      <div class="lg:col-span-1" id="about-sidebar">
         <div class="terminal-sidebar space-y-6">
           <!-- Skills Section -->
-          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+          <div class="terminal-section p-4 border rounded bg-black/20" id="about-skills-section" style="border-color: var(--border-color);">
             <h3 class="text-xl text-[--accent-green] mb-4">{t('about.skills.title')}</h3>
             
             {skillsData.map((skillCategory) => (
@@ -121,7 +121,7 @@ const yearsExp = getExperienceYearsString();
           </div>
           
           <!-- Current Tech Stack -->
-          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+          <div class="terminal-section p-4 border rounded bg-black/20" id="about-tech-stack-section" style="border-color: var(--border-color);">
             <h3 class="text-xl text-[--accent-green] mb-4">{t('about.current.stack')}</h3>
             <ul class="space-y-2 text-[--text-secondary]">
               {techStackData.map(tech => (
@@ -134,7 +134,7 @@ const yearsExp = getExperienceYearsString();
           </div>
           
           <!-- Interests -->
-          <div class="terminal-section p-4 border rounded bg-black/20" style="border-color: var(--border-color);">
+          <div class="terminal-section p-4 border rounded bg-black/20" id="about-interests-section" style="border-color: var(--border-color);">
             <h3 class="text-xl text-[--accent-green] mb-4">{t('about.interests.title')}</h3>
             <ul class="space-y-2 text-[--text-secondary]">
               {interestsData.map(interest => (

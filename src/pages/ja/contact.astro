@@ -37,10 +37,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         
         <form id="contact-form" class="p-4 border rounded bg-black/20" style="border-color: var(--border-color);" action="https://formspree.io/f/xrbpayzn" method="POST">
           <div class="mb-4">
-            <label for="name" class="block text-[--text-secondary] mb-2">お名前:</label>
+            <label for="contact-input-name" class="block text-[--text-secondary] mb-2">お名前:</label>
             <input 
               type="text" 
-              id="name" 
+              id="contact-input-name" 
               name="name" 
               required
               class="w-full bg-black/30 border border-[--border-color] text-[--text-primary] p-2 rounded focus:border-[--accent-green] focus:outline-none"
@@ -48,10 +48,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           </div>
           
           <div class="mb-4">
-            <label for="email" class="block text-[--text-secondary] mb-2">メールアドレス:</label>
+            <label for="contact-input-email" class="block text-[--text-secondary] mb-2">メールアドレス:</label>
             <input 
               type="email" 
-              id="email" 
+              id="contact-input-email" 
               name="email" 
               required
               class="w-full bg-black/30 border border-[--border-color] text-[--text-primary] p-2 rounded focus:border-[--accent-green] focus:outline-none"
@@ -59,10 +59,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           </div>
           
           <div class="mb-4">
-            <label for="subject" class="block text-[--text-secondary] mb-2">件名:</label>
+            <label for="contact-input-subject" class="block text-[--text-secondary] mb-2">件名:</label>
             <input 
               type="text" 
-              id="subject" 
+              id="contact-input-subject" 
               name="subject" 
               required
               class="w-full bg-black/30 border border-[--border-color] text-[--text-primary] p-2 rounded focus:border-[--accent-green] focus:outline-none"
@@ -70,9 +70,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           </div>
           
           <div class="mb-6">
-            <label for="message" class="block text-[--text-secondary] mb-2">メッセージ:</label>
+            <label for="contact-input-message" class="block text-[--text-secondary] mb-2">メッセージ:</label>
             <textarea 
-              id="message" 
+              id="contact-input-message" 
               name="message" 
               rows="6" 
               required
@@ -82,7 +82,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           
           <!-- Cloudflare Turnstile Widget -->
           <div class="mb-4 cf-turnstile-container">
-            <div class="cf-turnstile"></div>
+            <div class="cf-turnstile" id="contact-turnstile-widget"></div>
           </div>
           
           <!-- Hidden form fields -->
@@ -91,6 +91,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           <div class="flex items-center">
             <button 
               type="submit"
+              id="contact-button-submit"
               disabled
               class="inline-flex items-center justify-center px-4 py-2 bg-[#00FF85] text-black border border-[#00FF85] font-mono text-sm rounded transition-all duration-200 hover:bg-opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -127,7 +128,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
               </span>
-              <span class="ml-2">{t('contact.email')} <a href="mailto:hello@ariwira.me" class="text-[--accent-blue] hover:underline">hello@ariwira.me</a></span>
+              <span class="ml-2">{t('contact.email')} <a href="mailto:hello@ariwira.me" id="contact-link-email" class="text-[--accent-blue] hover:underline">hello@ariwira.me</a></span>
             </p>
             <p class="mb-2 flex items-center">
               <span class="inline-block w-6">
@@ -135,7 +136,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                 </svg>
               </span>
-              <span class="ml-2">{t('contact.github')} <a href="https://github.com/prasetyowira" class="text-[--accent-blue] hover:underline">github.com/prasetyowira</a></span>
+              <span class="ml-2">{t('contact.github')} <a href="https://github.com/prasetyowira" id="contact-link-github" class="text-[--accent-blue] hover:underline">github.com/prasetyowira</a></span>
             </p>
             <p class="flex items-center">
               <span class="inline-block w-6">
@@ -145,7 +146,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
                   <circle cx="4" cy="4" r="2"></circle>
                 </svg>
               </span>
-              <span class="ml-2">{t('contact.linkedin')} <a href="https://linkedin.com/in/ariwira" class="text-[--accent-blue] hover:underline">linkedin.com/in/ariwira</a></span>
+              <span class="ml-2">{t('contact.linkedin')} <a href="https://linkedin.com/in/ariwira" id="contact-link-linkedin" class="text-[--accent-blue] hover:underline">linkedin.com/in/ariwira</a></span>
             </p>
           </div>
           

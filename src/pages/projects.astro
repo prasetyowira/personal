@@ -39,9 +39,9 @@ const projects: Project[] = projectsData.map(project => ({
     </div>
     
     <div id="project-container">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="projects-list">
         {projects.map((project, index) => (
-          <a href={project.link} class="block project-item" style={`--index: ${index % 9}`}>
+          <a href={project.link} class="block project-item" style={`--index: ${index % 9}`} id={`project-item-${project.id}`}>
             <div class="project-card glow-effect h-full transform transition-all duration-300">
               <div class="p-5">
                 {project.featured && (
